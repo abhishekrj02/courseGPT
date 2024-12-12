@@ -2,19 +2,25 @@ export default [
   {
     id: 1,
     name: "Programming",
-    icon: "/logo.png",
+    icon: "/programming.svg",
     prompt: "",
   },
   {
     id: 2,
     name: "Health",
-    icon: "/logo.png",
+    icon: "/health.svg",
     prompt: "",
   },
   {
     id: 3,
     name: "Creative",
-    icon: "/logo.png",
+    icon: "/creative.svg",
     prompt: "",
   },
+  {
+    id: 4,
+    name: "Study",
+    icon: "/study.svg",
+    prompt: "",
+  }
 ];
