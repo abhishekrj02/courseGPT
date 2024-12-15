@@ -11,87 +11,28 @@ import { eq } from "drizzle-orm";
 import Link from "next/link";
 
 function CourseBasicInfo({ course, refreshData, edit }) {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [filePreview, setFilePreview] = useState("/defaultBanner.jpg");
-  useEffect(() => {
-    if (course?.courseBanner) {
-      setFilePreview(course?.courseBanner);
-    } else {
-      console.log("everything ok till here");
-    }
-  }, [course]);
-
+  const [selectedFile, setSelectedFile] = useState();
   const onFileSelected = async (event) => {
-    const file = event.target.files[0]; // Get the first selected file
-    console.log(file);
-    if (file) {
-      setSelectedFile(file);
-      setFilePreview(URL.createObjectURL(file)); // Create a preview URL
-    }
+    const file = event.target.files[0];
+    setSelectedFile(URL.createObjectURL(file));
     const fileName = Date.now() + ".jpg";
     const storageRef = ref(storage, fileName);
     await uploadBytes(storageRef, file)
       .then((snapshot) => {
-        console.log("Upload file compplete..");
+        console.log("Upload file Complete");
       })
-      .then((resp) => getDownloadURL(storageRef))
-      .then(async (downloadURL) => {
-        console.log(downloadURL);
-        await db
-          .update(CourseList)
-          .set({
-            courseBanner: downloadURL,
-          })
-          .where(eq(CourseList.id, course?.id));
+      .then((resp) => {
+        getDownloadURL(storageRef).then(async (downloadUrl) => {
+          console.log(downloadUrl);
+          await db
+            .update(CourseList)
+            .set({
+              courseBanner: downloadUrl,
+            })
+            .where(eq(CourseList.courseId, course?.courseId));
+        });
       });
   };
-
-  // const [selectedFile, setSelectedFile] = useState(null);
-  // const [filePreview, setFilePreview] = useState('/defaultBanner.jpg');
-
-  // useEffect(() => {
-  //     // Update preview when course data changes
-  //     if (course?.courseBanner) {
-  //         setFilePreview(course.courseBanner);
-  //     }
-  // }, [course]);
-
-  // const onFileSelected = async (event) => {
-  //     const file = event.target.files[0];
-  //     if (!file) return;
-
-  //     // Set the preview immediately for user feedback
-  //     const previewURL = URL.createObjectURL(file);
-  //     setFilePreview(previewURL);
-  //     setSelectedFile(file);
-
-  //     try {
-  //         const fileName = `${Date.now()}.jpg`;
-  //         const storageRef = ref(storage, fileName);
-
-  //         // Upload file to Firebase Storage
-  //         const snapshot = await uploadBytes(storageRef, file);
-  //         console.log("File uploaded successfully", snapshot);
-
-  //         // Get the file's download URL
-  //         const downloadURL = await getDownloadURL(storageRef);
-  //         console.log("Download URL:", downloadURL);
-
-  //         // Update the database with the new URL
-  //         await db
-  //             .update(CourseList)
-  //             .set({ courseBanner: downloadURL })
-  //             .where(eq(CourseList.id, course?.id));
-
-  //         // Refresh course data
-  //         refreshData(true);
-  //     } catch (error) {
-  //         console.error("Error uploading file:", error);
-  //     } finally {
-  //         // Clean up preview URL to prevent memory leaks
-  //         URL.revokeObjectURL(previewURL);
-  //     }
-  // };
 
   return (
     <div className="p-10 border rounded-xl shadow-sm mt-5">
@@ -129,7 +70,7 @@ function CourseBasicInfo({ course, refreshData, edit }) {
             <div>
               <Image
                 alt="Upload Logo"
-                src={filePreview}
+                src={selectedFile ? selectedFile : "/defaultBanner.jpg"}
                 width={400}
                 height={400}
                 className="w-full rounded-xl  object-cover bg-gray-400"
@@ -149,12 +90,5 @@ function CourseBasicInfo({ course, refreshData, edit }) {
     </div>
   );
 }
-/*
-courseOutput
-    CourseName
-    Description
-    Duration
-    NoOfChapters
-*/
 
 export default CourseBasicInfo;

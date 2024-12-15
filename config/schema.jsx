@@ -11,9 +11,7 @@ export const CourseList = pgTable("courseList", {
     createdBy: varchar("createdBy").notNull(),
     username: varchar("username"),
     userProfileImage: varchar("userProfileImage"),
-    courseBanner: varchar("courseBanner").default(
-        "https://firebasestorage.googleapis.com/v0/b/studyai-c4872.appspot.com/o/hq720.jpg?alt=media&token=4b51f688-8b30-4cb5-8ed0-c39febbdfba8"
-    ),
+    courseBanner: varchar("courseBanner"),
     publish: boolean("publish").default(false),
 });
 

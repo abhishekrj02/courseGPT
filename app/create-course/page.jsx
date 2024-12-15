@@ -73,7 +73,7 @@ function CreateCourse() {
   const GenerateCourseLayout = async () => {
     setLoading(true);
 
-    const USER_INPUT_PROMPT = `Generate a course tutorial for following details with field as CourseName, Description, topic: ${userCourseInput?.topic}, for description ${userCourseInput?.description}, category: ${userCourseInput?.category}, noOfChapters: ${userCourseInput?.noOfChatpers}, totalDuration: ${userCourseInput?.duration}, difficulty: ${userCourseInput?.difficulty}, along with Chapters = chapterName, about, description, duration for each chapter in JSON format`;
+    const USER_INPUT_PROMPT = `Generate a course tutorial for following details with field as CourseName, Description(add your own), topic: ${userCourseInput?.topic}, for description ${userCourseInput?.description}, category: ${userCourseInput?.category}, noOfChapters: ${userCourseInput?.noOfChatpers}, totalDuration: ${userCourseInput?.duration}, difficulty: ${userCourseInput?.difficulty}, along with Chapters = chapterName, about, description, duration for each chapter in JSON format`;
 
     const result = await GenerateCourseLayout_AI.sendMessage(USER_INPUT_PROMPT);
     // console.log(JSON.parse(result.response?.text()));
