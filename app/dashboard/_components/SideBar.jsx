@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../../../public/logo.png";
 import Image from "next/image";
 import { FileStackIcon, Home, LogOutIcon, Shield } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
+import { UserCourseListContext } from "@/app/_context/UserCourseListContext";
 function SideBar() {
+    const {userCourseList, setUserCourseList} = useContext(UserCourseListContext)
     const Menu = [
         {
             id: 1,
@@ -56,9 +58,9 @@ function SideBar() {
                 ))}
             </ul>
             <div className="absolute bottom-10 w-[80%]">
-                <Progress value={20} />
+                <Progress value={(userCourseList?.length)/15*100} />
                 <h2 className="text-sm my-2 text-center">
-                    1 Out of 5 Course Created
+                    {userCourseList?.length} Out of 15 Course Created
                 </h2>
                 <h2 className="text-xs text-center  text-gray-500">
                     Upgrade your plan for unlimited course generation.

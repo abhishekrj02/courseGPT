@@ -3,23 +3,29 @@ import { db } from "@/config/db";
 import { CourseList } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 import Image from "next/image";
+import { UserCourseListContext } from "@/app/_context/UserCourseListContext";
 
 function UserCourseList() {
   const [courseList, setCourseList] = useState([]);
+  const {userCourseList, setUserCourseList} = useContext(UserCourseListContext);
   const { user } = useUser();
+
   useEffect(() => {
     user && getUserCourses();
   }, [user]);
+
+
   const getUserCourses = async () => {
     const result = await db
       .select()
       .from(CourseList)
       .where(eq(CourseList?.createdBy, user.primaryEmailAddress.emailAddress));
-    console.log(result);
+    // console.log(result);
     setCourseList(result);
+    setUserCourseList(result);
   };
 
   return (
@@ -28,12 +34,12 @@ function UserCourseList() {
       {courseList?.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {courseList.map((course, index) => (
-            <CourseCard course={course} key={index} />
+            <CourseCard refreshData={()=> getUserCourses()} course={course} key={index} />
           ))}
         </div>
       ) : (
         <div className="h-[200px] w-full flex items-center justify-center">
-          <Image src={"/loading2.gif"} width={50} height={50} />
+          <Image src={"/loading2.gif"} width={50} height={50} alt="loading" />
         </div>
       )}
     </div>

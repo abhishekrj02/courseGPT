@@ -1,11 +1,13 @@
 "use client";
+import { UserCourseListContext } from "@/app/_context/UserCourseListContext";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 
 function AddCourse() {
   const { user } = useUser();
+  const {userCourseList, setUserCourseList} = useContext(UserCourseListContext);
   return (
     <div className="sm:flex items-center justify-between">
       <div>
@@ -17,9 +19,10 @@ function AddCourse() {
         </p>
       </div>
       <div className="my-2">
-        <Link href={"/create-course"}>
+        <Link href={(userCourseList?.length)>=15?"/dashbord/upgrade":"/create-course"}>
           <Button>Create AI Course</Button>
         </Link>
+        {(userCourseList?.length)>=15 && <p className="text-xs text-red-600 text-left md:text-center">*Maximum Limit Reached</p>}
       </div>
     </div>
   );
