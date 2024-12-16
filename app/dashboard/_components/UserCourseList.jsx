@@ -12,6 +12,7 @@ function UserCourseList() {
   const [courseList, setCourseList] = useState([]);
   const {userCourseList, setUserCourseList} = useContext(UserCourseListContext);
   const { user } = useUser();
+    const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     user && getUserCourses();
@@ -19,6 +20,7 @@ function UserCourseList() {
 
 
   const getUserCourses = async () => {
+    setLoading(true);
     const result = await db
       .select()
       .from(CourseList)
@@ -26,20 +28,33 @@ function UserCourseList() {
     // console.log(result);
     setCourseList(result);
     setUserCourseList(result);
+    setLoading(false);
   };
 
   return (
     <div className="mt-8">
-      <h2 className="font-medium text-xl">My AI Courses</h2>
-      {courseList?.length > 0 ? (
+      <h2 className="font-medium text-xl mb-4">Explore More Courses</h2>
+      {loading ? (
+        // Show loading spinner when fetching data
+        <div className="h-[200px] w-full flex items-center justify-center">
+          <Image src={"/loading2.gif"} width={50} height={50} alt="loading" />
+        </div>
+      ) : courseList?.length > 0 ? (
+        // Show courses when data is available
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {courseList.map((course, index) => (
-            <CourseCard refreshData={()=> getUserCourses()} course={course} key={index} />
+            <CourseCard
+              refreshData={() => getUserCourses()}
+              viewOnly={false}
+              course={course}
+              key={index}
+            />
           ))}
         </div>
       ) : (
+        // Show "no courses" message if array is empty
         <div className="h-[200px] w-full flex items-center justify-center">
-          <Image src={"/loading2.gif"} width={50} height={50} alt="loading" />
+          <p>No courses to show</p>
         </div>
       )}
     </div>

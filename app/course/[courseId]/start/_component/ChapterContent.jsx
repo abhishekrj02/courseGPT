@@ -20,7 +20,7 @@ function ChapterContent({ chapter, content }) {
       {/* video */}
       {content?.videoId == "" ? null : (
          <div className="flex justify-center items-center my-4">
-      <div className="w-full sm:w-[60%] md:w-[50%] lg:w-[40%] px-2">
+      <div className="w-full sm:w-[60%] md:w-[75%] lg:w-[60%] xl:w-[50%] 2xl:w-[45%] px-2">
             <YouTube
               className="h-64"
               key={content?.chapterId}

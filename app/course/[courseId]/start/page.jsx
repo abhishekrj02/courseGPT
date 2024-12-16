@@ -2,7 +2,7 @@
 import { db } from "@/config/db";
 import { Chapters, CourseList } from "@/config/schema";
 import { and, eq } from "drizzle-orm";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChapterListCard from "./_component/ChapterListCard";
 import ChapterContent from "./_component/ChapterContent";
 import Header from "@/app/dashboard/_components/Header";
@@ -40,6 +40,14 @@ function StartCourse({ params }) {
     // console.log(chapterContent);
   };
 
+  const scrollableDivRef = useRef(null);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({top: 0, behavior:"smooth"});
+  };
+
+
+
   return (
     <div>
       {/* chapter list sidebar */}
@@ -51,11 +59,12 @@ function StartCourse({ params }) {
           {course?.courseOutput?.Chapters.map((chapter, index) => (
             <div
               key={index}
-              className={`cursor-pointer hover:bg-blue-100 transition-all duration-200 ${
-                selectedChapter == chapter ? "bg-blue-100" : ""
-              }`}
+              className={`cursor-pointer hover:bg-blue-100 transition-all duration-200 ${selectedChapter == chapter ? "bg-blue-100" : ""
+                }`}
               onClick={() => {
+
                 
+                handleScrollToTop();
                 setSelectedChapter(chapter);
                 getSelectedChapterContent(index);
               }}
@@ -67,9 +76,9 @@ function StartCourse({ params }) {
       </div>
 
       {/* content */}
-      <div className="md:ml-72 ">
+      <div className="md:ml-72" ref={scrollableDivRef}>
         <Header />
-        <ChapterContent  chapter={selectedChapter} content={chapterContent} />
+        <ChapterContent chapter={selectedChapter} content={chapterContent} />
       </div>
     </div>
   );

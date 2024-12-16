@@ -32,7 +32,7 @@ function SideBar() {
             id: 4,
             name: "Logout",
             icon: <LogOutIcon />,
-            path: "/dashboard/logout",
+            path: "/",
         },
     ];
     const path = usePathname();
