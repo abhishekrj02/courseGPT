@@ -88,7 +88,7 @@ function CourseLayout({ params }) {
 
   return (
     <div className="mt-10 px-7 md:px-20 lg-px-44">
-      <h2 className="font-bold text-center text-2xl">Course Layout</h2>
+      {!course?.publish && <h2 className="font-bold text-center text-2xl">Course Layout</h2>}
       <LoadingDialog loading={loading} />
       <CourseBasicInfo course={course} refreshData={() => GetCourse()} edit={!course?.publish}/>
       <CourseDetail course={course} />

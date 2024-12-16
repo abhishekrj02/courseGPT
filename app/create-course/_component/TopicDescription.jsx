@@ -17,7 +17,7 @@ function TopicDescription() {
       <div className="mt-5">
         <label>
           Write the topic for which you want to generate a course (e.g., Python
-          Course, Yoga, etc):
+          Course, Yoga, etc).*
         </label>
         <Input
           placeholder={"Topic"}

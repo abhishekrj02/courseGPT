@@ -23,7 +23,7 @@ function SelectOption() {
         <div className="sm:px-10 md:px-20 lg:px-44 mb-8">
             <div className="grid grid-cols-2 gap-10">
                 <div>
-                    <label>Difficulty</label>
+                    <label>Difficulty*</label>
                     <Select
                         onValueChange={(value) =>
                             handleInputChange("difficulty", value)
@@ -44,7 +44,7 @@ function SelectOption() {
                 </div>
 
                 <div>
-                    <label>Course Duration</label>
+                    <label>Course Duration*</label>
                     <Select
                         onValueChange={(value) =>
                             handleInputChange("duration", value)
@@ -73,7 +73,7 @@ function SelectOption() {
                         defaultValue={userCourseInput?.displayVideo}
                     >
                         <SelectTrigger className="">
-                            <SelectValue placeholder="Select" />
+                            <SelectValue placeholder="Yes" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="Yes">Yes</SelectItem>
