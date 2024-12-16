@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import logo from "../../../public/logo.svg";
 import Image from "next/image";
-import { Box, FileStackIcon, Home, LogOutIcon, Shield } from "lucide-react";
+import { Box, Codesandbox, FileStackIcon, Home, LogOutIcon, Shield } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
@@ -41,7 +41,7 @@ function SideBar() {
             <div className="flex gap-4 px=12 justify-center">
                 {/* <Image src={logo} alt="logo" width={30} height={30} /> */}
                 
-                <Box />
+                <Codesandbox />
                 <h1 className="text-xl hidden md:block">CourseGPT</h1>
             </div>
             <hr className="my-5" />

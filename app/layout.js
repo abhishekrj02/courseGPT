@@ -16,8 +16,8 @@ const geistMono = localFont({
 const outfit = Outfit({subsets: ["latin"]});
 
 export const metadata = {
-  title: "CourseAI",
-  description: "Generated AI courses",
+  title: "CourseGPT",
+  description: "Generated Free AI courses",
 };
 
 export default function RootLayout({ children }) {
