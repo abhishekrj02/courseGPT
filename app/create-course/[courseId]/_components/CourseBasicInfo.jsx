@@ -19,11 +19,11 @@ function CourseBasicInfo({ course, refreshData, edit }) {
     const storageRef = ref(storage, fileName);
     await uploadBytes(storageRef, file)
       .then((snapshot) => {
-        console.log("Upload file Complete");
+        // console.log("Upload file Complete");
       })
       .then((resp) => {
         getDownloadURL(storageRef).then(async (downloadUrl) => {
-          console.log(downloadUrl);
+          // console.log(downloadUrl);
           await db
             .update(CourseList)
             .set({

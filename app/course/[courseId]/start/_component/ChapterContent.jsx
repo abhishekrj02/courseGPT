@@ -19,15 +19,15 @@ function ChapterContent({ chapter, content }) {
 
       {/* video */}
       {content?.videoId == "" ? null : (
-         <div className="flex justify-center items-center my-4">
-      <div className="w-full sm:w-[60%] md:w-[75%] lg:w-[60%] xl:w-[50%] 2xl:w-[45%] px-2">
+        <div className="flex justify-center items-center my-4">
+          <div className="w-full sm:w-[60%] md:w-[75%] lg:w-[60%] xl:w-[50%] 2xl:w-[45%] px-2">
             <YouTube
               className="h-64"
               key={content?.chapterId}
               videoId={content?.videoId}
               opts={opts}
             />
-            </div>
+          </div>
         </div>
       )}
 
@@ -53,42 +53,62 @@ function ChapterContent({ chapter, content }) {
               <div className="mt-5">
                 <h2 className="text-lg font-semibold">Additional Resoures: </h2>
                 <div>
-                  {typeof item.additionalResources === "string" ? (
-                    <a
-                      href={item.additionalResources}
-                      target="_blank"
-                      className="text-blue-600 underline"
-                    >
-                      {item.additionalResources}
-                    </a>
-                  ) : (
+                  {Array.isArray(item.additionalResources) ? (
                     item.additionalResources.map((link, index) => (
-                      <div key={index} className=" gap-4">
+                      <div key={index} className="gap-4">
                         {typeof link === "string" ? (
+                          // If link is a string, render as an <a> tag
+                          <a
+                            href={link}
+                            target="_blank"
+                            className="text-blue-600 underline"
+                            rel="noopener noreferrer"
+                          >
+                            {link}
+                          </a>
+                        ) : link && typeof link === "object" ? (
+                          // If link is an object, render its 'link' and 'title'
                           <>
-                            <a
-                              href={link}
-                              target="_blank"
-                              className="text-blue-600 underline"
-                            >
-                              {link}
-                            </a>
-                          </>
-                        ) : (
-                          <>
-                            <p>{link.title}:</p>
+                            {link.title && <p>{link.title}:</p>}
                             <a
                               href={link.link}
                               target="_blank"
                               className="text-blue-600 underline"
+                              rel="noopener noreferrer"
                             >
                               {link.link}
                             </a>
                           </>
-                        )}
+                        ) : null}
                       </div>
                     ))
-                  )}
+                  ) : typeof item.additionalResources === "string" ? (
+                    // Handle the case where additionalResources is a single string
+                    <a
+                      href={item.additionalResources}
+                      target="_blank"
+                      className="text-blue-600 underline"
+                      rel="noopener noreferrer"
+                    >
+                      {item.additionalResources}
+                    </a>
+                  ) : item.additionalResources && typeof item.additionalResources === "object" ? (
+                    // Handle the case where additionalResources is a single object
+                    <>
+                      {item.additionalResources.title && (
+                        <p>{item.additionalResources.title}:</p>
+                      )}
+                      <a
+                        href={item.additionalResources.link}
+                        target="_blank"
+                        className="text-blue-600 underline"
+                        rel="noopener noreferrer"
+                      >
+                        {item.additionalResources.link}
+                      </a>
+                    </>
+                  ) : null}
+
                 </div>
               </div>
             )}

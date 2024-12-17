@@ -45,7 +45,7 @@ function CourseLayout({ params }) {
         try {
           const result = await GenerateChapterContent_AI.sendMessage(PROMPT2);
           const content = JSON.parse(result?.response?.text());
-          console.log(content);
+          // console.log(content);
           // Optional: Fetch video ID (if applicable)
 
           let videoId = "";
@@ -55,7 +55,7 @@ function CourseLayout({ params }) {
               console.log(resp);
               videoId = resp[0]?.id?.videoId;
             });
-            console.log(videoId);
+            // console.log(videoId);
 
           // Insert into database
 
