@@ -17,7 +17,7 @@ function Explore() {
     setLoading(true);
     const result = await db.select().from(CourseList)
       .where(eq(CourseList.publish, true))
-      .limit(10)
+      // .limit(10)
       .offset(0);
     setCourses(result);
     setLoading(false);

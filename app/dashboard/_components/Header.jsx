@@ -7,10 +7,9 @@ import React from "react";
 
 function Header() {
   return (
-    <div className="flex justify-between items-center p-4 shadow-sm">
+    <div className="flex justify-between w-full items-center p-4 shadow-sm">
       <Link href={'/dashboard'}>
-        {/* <Image src={"/logo.png"} alt="logo" width={40} height={40} /> */}
-        <Codesandbox className="h-8 w-8 " />
+        <Codesandbox className="hidden md:block h-8 w-8 " />
       </Link>
       <UserButton />
     </div>
