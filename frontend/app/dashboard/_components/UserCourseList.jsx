@@ -17,8 +17,7 @@ function UserCourseList() {
   useEffect(() => {
     user && getUserCourses();
   }, [user]);
-
-
+  
   const getUserCourses = async () => {
     setLoading(true);
     const result = await db
