@@ -34,7 +34,7 @@ function Hero() {
           </div>
         </div>
       </section>
-      <section className="container space-y-6 py-8 md:py-12 lg:py-24">
+      {/* <section className="container space-y-6 py-8 md:py-12 lg:py-24">
         <div className="mx-auto grid justify-center gap-8 sm:grid-cols-2 md:max-w-[72rem] md:grid-cols-3">
           <Card>
             <CardContent className="p-6">
@@ -64,7 +64,7 @@ function Hero() {
             </CardContent>
           </Card>
         </div>
-      </section>
+      </section> */}
 
     </div>
   );
