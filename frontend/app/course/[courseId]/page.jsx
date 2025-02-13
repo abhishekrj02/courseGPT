@@ -31,7 +31,7 @@ function Course() {
 
   const GetCourse = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/courses/course/all', {
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses/course/all', {
             params: {
                 courseId: params?.courseId,
             }

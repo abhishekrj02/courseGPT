@@ -33,10 +33,10 @@ function UserCourseList() {
   const getUserCourses = async () => {
     try {
         setLoading(true);
-        
-        const response = await axios.get('http://localhost:5000/api/courses/user', {
-            params: { email: user?.primaryEmailAddress?.emailAddress }
-        });
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses/user', { 
+          params: { email: user?.primaryEmailAddress?.emailAddress }
+      });
+      
 
         if (response.status === 200) {
             setCourseList(response.data);

@@ -105,7 +105,7 @@ function CreateCourse() {
     var id = uuid4();
     setLoading(true);
     try {
-        const response = await axios.post('http://localhost:5000/api/courses', {
+        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses', {
             courseId: id,
             name: userCourseInput?.topic,
             difficulty: userCourseInput?.difficulty,

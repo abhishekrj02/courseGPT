@@ -41,7 +41,7 @@ function FinishScreen() {
   };
   const GetCourse = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/courses/course', {
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses/course', {
             params: {
                 courseId: params?.courseId,
                 createdBy: user?.primaryEmailAddress?.emailAddress

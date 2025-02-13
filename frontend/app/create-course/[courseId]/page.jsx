@@ -39,7 +39,7 @@ function CourseLayout() {
 
 const GetCourse = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/courses/course', {
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses/course', {
             params: {
                 courseId: params?.courseId,
                 createdBy: user?.primaryEmailAddress?.emailAddress
@@ -135,7 +135,7 @@ const GenerateChapterContent = async () => {
                     });
 
                 // Insert into database using Axios
-                await axios.post('http://localhost:5000/api/chapters', {
+                await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/chapters', {
                     chapterId: index,
                     courseId: course?.courseId,
                     content: content,
@@ -155,7 +155,7 @@ const GenerateChapterContent = async () => {
     } finally {
         // Update course as published
         try {
-            await axios.put('http://localhost:5000/api/courses/publish', { courseId: course?.courseId });
+            await axios.put(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses/publish', { courseId: course?.courseId });
         } catch (error) {
             console.error("Error updating course status:", error);
         }

@@ -28,7 +28,7 @@ const getAllCourse = async () => {
     try {
         setLoading(true);
         
-        const response = await axios.get('http://localhost:5000/api/courses/all');
+        const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses/all');
 
         if (response.status === 200) {
             setCourses(response.data);
