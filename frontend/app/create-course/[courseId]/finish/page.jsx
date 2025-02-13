@@ -3,20 +3,22 @@ import { db } from "@/config/db";
 import { CourseList } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import CourseBasicInfo from "../_components/CourseBasicInfo";
 import { CopyCheckIcon } from "lucide-react";
+import axios from "axios";
 
-function FinishScreen({ params }) {
+function FinishScreen() {
   const { user } = useUser();
   const router = useRouter();
   const [course, setCourse] = useState();
+  const params = useParams();
   useEffect(() => {
     params && GetCourse();
   }, [params, user]);
 
-  const GetCourse = async () => {
+  const GetCourseOld = async () => {
     const result = await db
       .select()
       .from(CourseList)
@@ -37,6 +39,24 @@ function FinishScreen({ params }) {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000); // Reset message after 2 seconds
   };
+  const GetCourse = async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/courses/course', {
+            params: {
+                courseId: params?.courseId,
+                createdBy: user?.primaryEmailAddress?.emailAddress
+            }
+        });
+
+        if (response.status === 200) {
+            setCourse(response.data);
+        } else {
+            console.error("Course not found:", response.data);
+        }
+    } catch (error) {
+        console.error("Failed to fetch course:", error);
+    }
+};
 
   return (
     <div className="px-10 md:px-20 lg:px-44 my-7">

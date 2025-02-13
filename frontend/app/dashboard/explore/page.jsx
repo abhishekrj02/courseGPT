@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm'
 import React, { useEffect, useState } from 'react'
 import CourseCard from '../_components/CourseCard'
 import Image from 'next/image'
-
+import axios from 'axios';
 function Explore() {
   const [courses, setCourses] = useState();
   useEffect(() => {
@@ -13,7 +13,7 @@ function Explore() {
   }, [])
   const [loading, setLoading] = useState(true);
 
-  const getAllCourse = async () => {
+  const getAllCourseOld = async () => {
     setLoading(true);
     const result = await db.select().from(CourseList)
       .where(eq(CourseList.publish, true))
@@ -22,6 +22,26 @@ function Explore() {
     setCourses(result);
     setLoading(false);
   }
+
+
+const getAllCourse = async () => {
+    try {
+        setLoading(true);
+        
+        const response = await axios.get('http://localhost:5000/api/courses/all');
+
+        if (response.status === 200) {
+            setCourses(response.data);
+        } else {
+            console.error("Failed to fetch courses:", response.data);
+        }
+    } catch (error) {
+        console.error("Error fetching courses:", error);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
   return (
     <>

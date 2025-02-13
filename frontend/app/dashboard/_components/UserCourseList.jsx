@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 import Image from "next/image";
 import { UserCourseListContext } from "@/app/_context/UserCourseListContext";
+import axios from "axios";
 
 function UserCourseList() {
   const [courseList, setCourseList] = useState([]);
@@ -18,7 +19,7 @@ function UserCourseList() {
     user && getUserCourses();
   }, [user]);
   
-  const getUserCourses = async () => {
+  const getUserCoursesOld = async () => {
     setLoading(true);
     const result = await db
       .select()
@@ -29,6 +30,26 @@ function UserCourseList() {
     setUserCourseList(result);
     setLoading(false);
   };
+  const getUserCourses = async () => {
+    try {
+        setLoading(true);
+        
+        const response = await axios.get('http://localhost:5000/api/courses/user', {
+            params: { email: user?.primaryEmailAddress?.emailAddress }
+        });
+
+        if (response.status === 200) {
+            setCourseList(response.data);
+            setUserCourseList(response.data);
+        } else {
+            console.error("Failed to fetch user courses:", response.data);
+        }
+    } catch (error) {
+        console.error("Error fetching user courses:", error);
+    } finally {
+        setLoading(false);
+    }
+};
 
   return (
     <div className="mt-8">

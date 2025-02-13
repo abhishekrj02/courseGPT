@@ -8,15 +8,19 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/config/db";
 import { CourseList } from "@/config/schema";
 import { eq } from "drizzle-orm";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-function Course({ params }) {
+
+function Course() {
   const [course, setCourse] = useState();
+  const params = useParams();
   useEffect(() => {
     params && GetCourse();
   }, [params]);
 
-  const GetCourse = async () => {
+  const GetCourseOld = async () => {
     const result = await db
       .select()
       .from(CourseList)
@@ -24,6 +28,24 @@ function Course({ params }) {
     setCourse(result[0]);
     // console.log(result);
   };
+
+  const GetCourse = async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/courses/course/all', {
+            params: {
+                courseId: params?.courseId,
+            }
+        });
+
+        if (response.status === 200) {
+            setCourse(response.data);
+        } else {
+            console.error("Course not found:", response.data);
+        }
+    } catch (error) {
+        console.error("Failed to fetch course:", error);
+    }
+};
   return (
     <div>
       <Header />

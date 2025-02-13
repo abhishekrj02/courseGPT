@@ -6,8 +6,11 @@ import React, { useEffect, useRef, useState } from "react";
 import ChapterListCard from "./_component/ChapterListCard";
 import ChapterContent from "./_component/ChapterContent";
 import Header from "@/app/dashboard/_components/Header";
+import axios from 'axios';
+import { useParams } from "next/navigation";
 
-function StartCourse({ params }) {
+function StartCourse() {
+  const params = useParams();
   const [selectedChapter, setSelectedChapter] = useState();
   const [chapterContent, setChaptercontent] = useState();
   const [course, setCourse] = useState();
@@ -15,7 +18,7 @@ function StartCourse({ params }) {
     GetCourse();
   }, []);
 
-  const GetCourse = async () => {
+  const GetCourseOld = async () => {
     const result = await db
       .select()
       .from(CourseList)
@@ -25,7 +28,26 @@ function StartCourse({ params }) {
     getSelectedChapterContent(0);
   };
 
-  const getSelectedChapterContent = async (index) => {
+
+const GetCourse = async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/courses/course/all', {
+            params: { courseId: params?.courseId }
+        });
+
+        if (response.status === 200) {
+            const courseData = response.data;
+            setCourse(courseData);
+            setSelectedChapter(courseData.courseOutput?.Chapters[0]);
+            getSelectedChapterContent(0, params);
+        } else {
+            console.error("Course not found:", response.data);
+        }
+    } catch (error) {
+        console.error("Failed to fetch course:", error);
+    }
+};
+  const getSelectedChapterContentOld = async (index) => {
     const result = await db
       .select()
       .from(Chapters)
@@ -39,6 +61,24 @@ function StartCourse({ params }) {
     setChaptercontent(result[0]);
     // console.log(chapterContent);
   };
+  const getSelectedChapterContent = async (index) => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/chapters', {
+            params: {
+                courseId: params?.courseId,
+                chapterId: index
+            }
+        });
+
+        if (response.status === 200) {
+          setChaptercontent(response.data);
+        } else {
+            console.error("Chapter not found:", response.data);
+        }
+    } catch (error) {
+        console.error("Failed to fetch chapter:", error);
+    }
+};
 
   const scrollableDivRef = useRef(null);
 

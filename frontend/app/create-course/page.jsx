@@ -9,12 +9,12 @@ import { UserInputContext } from "../_context/UserInputContext";
 import { GenerateCourseLayout_AI } from "@/config/AiModel";
 import LoadingDialog from "./_component/LoadingDialog";
 import { db } from "@/config/db";
-import { uuid } from "drizzle-orm/pg-core";
 import { useUser } from "@clerk/nextjs";
 import uuid4 from "uuid4";
 import { CourseList } from "@/config/schema";
 // import { useRouter } from "next/router";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 function CreateCourse() {
   const { user } = useUser();
@@ -79,10 +79,10 @@ function CreateCourse() {
     // console.log(JSON.parse(result.response?.text()));
     setLoading(false);
     SaveCourseLayoutInDb(JSON.parse(result.response?.text()));
-    // console.log(userCourseInput);
+    console.log(userCourseInput);
   };
 
-  const SaveCourseLayoutInDb = async (courseLayout) => {
+  const SaveCourseLayoutInDbOld = async (courseLayout) => {
     var id = uuid4();
     setLoading(true);
     const result = await db.insert(CourseList).values({
@@ -100,6 +100,36 @@ function CreateCourse() {
     setLoading(false);
     router.replace("/create-course/" + id);
   };
+
+  const SaveCourseLayoutInDb = async (courseLayout) => {
+    var id = uuid4();
+    setLoading(true);
+    try {
+        const response = await axios.post('http://localhost:5000/api/courses', {
+            courseId: id,
+            name: userCourseInput?.topic,
+            difficulty: userCourseInput?.difficulty,
+            category: userCourseInput?.category,
+            includeVideo: userCourseInput?.displayVideo,
+            courseOutput: courseLayout,
+            createdBy: user?.primaryEmailAddress?.emailAddress,
+            username: user?.fullName,
+            userProfileImage: user?.imageUrl,
+        });
+
+        if (response.status === 201) {
+            router.replace("/create-course/" + id);
+        } else {
+            console.error("Error saving course:", response.data);
+            setLoading(false);
+        }
+    } catch (error) {
+        console.error("Failed to save course:", error);
+        setLoading(false);
+    } finally {
+        setLoading(false);
+    }
+};
 
   return (
     <div className="mb-8">
