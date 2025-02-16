@@ -1,5 +1,6 @@
 import express from 'express';
 import Course from '../models/Course.js';
+import Chapter from '../models/Chapter.js';
 import { authenticateUser, authorizeAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -115,6 +116,24 @@ router.put('/publish', async (req, res) => {
     }
 });
 
+router.delete('/:courseId', async (req, res) => {
+    try {
+        const { courseId } = req.params;
 
+        // Delete the course
+        const deletedCourse = await Course.findOneAndDelete({ courseId });
+
+        if (!deletedCourse) {
+            return res.status(404).json({ error: "Course not found" });
+        }
+
+        // Delete all chapters linked to this course
+        await Chapter.deleteMany({ courseId });
+
+        res.status(200).json({ message: "Course and related chapters deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete course and chapters" });
+    }
+});
 
 export default router;

@@ -34,7 +34,7 @@ function FinishScreen() {
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(
-      process.env.NEXT_PUBLIC_HOSTNAME + "course/view/" + course?.courseId
+      process.env.NEXT_PUBLIC_HOSTNAME + "course/" + course?.courseId + "/start"
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000); // Reset message after 2 seconds
@@ -66,7 +66,7 @@ function FinishScreen() {
       <CourseBasicInfo course={course} refreshData={() => console.log()} />
       <h2 className="mt-3">Course URL:</h2>
       <h2 className="flex gap-5 text-center text-sm text-gray-500 p-2 border rounded-xl">
-        {process.env.NEXT_PUBLIC_HOSTNAME}course/view/{course?.courseId}
+        {process.env.NEXT_PUBLIC_HOSTNAME}course/{course?.courseId}/start
         <CopyCheckIcon
           className="h-5 w-5 cursor-pointer"
           onClick={handleCopy}

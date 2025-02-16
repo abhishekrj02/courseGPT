@@ -6,9 +6,10 @@ import Dropdown from "./Dropdown";
 import { db } from "@/config/db";
 import { CourseList } from "@/config/schema";
 import { eq } from "drizzle-orm";
+import axios from 'axios';
 
 function CourseCard({ course, refreshData, viewOnly }) {
-  const deleteCourse = async () => {
+  const deleteCourseOld = async () => {
     const resp = await db
       .delete(CourseList)
       .where(eq(CourseList.id, course?.id))
@@ -18,6 +19,21 @@ function CourseCard({ course, refreshData, viewOnly }) {
       refreshData();
     }
   };
+const deleteCourse = async (courseId) => {
+    try {
+        const response = await axios.delete( process.env.NEXT_PUBLIC_SERVER_URL +`/api/courses/${courseId}`);
+
+        if (response.status === 200) {
+            refreshData(); // Refresh course list after deletion
+        } else {
+            console.error("Failed to delete course:", response.data);
+        }
+    } catch (error) {
+        console.error("Error deleting course:", error);
+    }
+};
+
+
   return (
     <div className="hover:shadow-xl shadow-lg border rounded-lg transition-all duration-200 ">
       <Link href={`/course/${course?.courseId}`}>
@@ -35,7 +51,7 @@ function CourseCard({ course, refreshData, viewOnly }) {
             {course?.courseOutput?.CourseName}
           </h2>
           {!viewOnly &&
-            <Dropdown handleOnDelete={() => deleteCourse()} refreshData={() => refreshData()}>
+            <Dropdown handleOnDelete={() => deleteCourse(course?.courseId)} refreshData={() => refreshData()}>
               <EllipsisVertical />
             </Dropdown>}
         </div>
