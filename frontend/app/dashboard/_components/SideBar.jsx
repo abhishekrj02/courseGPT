@@ -55,7 +55,7 @@ function SideBar() {
 
 
                     <div className="md:hidden">
-                        <h1 className="text-xl text-center">CourseGPT</h1>
+                        <h1 className="text-xl text-center">Code3</h1>
                         <hr className="my-5" />
                         <ul>
                             {Menu.map((item, index) => (
@@ -87,7 +87,7 @@ function SideBar() {
             <div className="fixed h-full md:block hidden md:w-64 p-5 shadow-md">
                 <div className="flex gap-4 px=12 justify-center">
                     <Codesandbox />
-                    <h1 className="text-xl ">CourseGPT</h1>
+                    <h1 className="text-xl ">Code3</h1>
                 </div>
                 <hr className="my-5" />
                 <ul>

@@ -16,7 +16,7 @@ const geistMono = localFont({
 const outfit = Outfit({subsets: ["latin"]});
 
 export const metadata = {
-  title: "CourseGPT",
+  title: "Code3",
   description: "Generated Free AI courses",
 };
 
