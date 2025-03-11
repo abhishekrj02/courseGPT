@@ -1,6 +1,6 @@
-# Code3
+# CourseGPT
 
-Code3 is an AI-powered platform that generates personalized courses based on user preferences and needs. The application uses Next.js, Tailwind CSS, ShadCN components, Clerk for user authentication, Drizzle PostgreSQL ORM for database management, and Firebase Storage for file storage.
+CourseGPT is an AI-powered platform that generates personalized courses based on user preferences and needs. The application uses Next.js, Tailwind CSS, ShadCN components, Clerk for user authentication, Drizzle PostgreSQL ORM for database management, and Firebase Storage for file storage.
 
 ---
 
@@ -42,8 +42,8 @@ Make sure you have the following:
 First, clone the repository:
 
 ```bash
-git clone https://github.com/abhishekrj02/Code3.git
-cd Code3
+git clone https://github.com/abhishekrj02/CourseGPT.git
+cd CourseGPT
 ```
 ### Start the Development Server
 Finally, start the development server:
