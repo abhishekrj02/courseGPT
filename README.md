@@ -86,3 +86,4 @@ git push origin feature/your-feature
 
 ---
 
+try out squashing
