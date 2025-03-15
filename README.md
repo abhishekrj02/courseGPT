@@ -85,5 +85,3 @@ git push origin feature/your-feature
 - Open a Pull Request with a description of your changes.
 
 ---
-
-try out squashing
