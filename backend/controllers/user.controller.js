@@ -73,14 +73,7 @@ const login = async (req, res, next) => {
 };
 
 const logout = (req, res, next) => {
-    if (req) {
-        console.log("yes1");
-        if (req.cookies) {
-            console.log("yes2");
-            if (req.cookies.token) console.log("yes3");
-        }
-    }
-
+    
     if (!req.cookies || !req.cookies.token) {
         return next(new AppError("User not logged in", 400));
     }

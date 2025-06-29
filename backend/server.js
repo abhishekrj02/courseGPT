@@ -7,6 +7,7 @@ import connectDB from './db.js';
 import authRoutes from './routes/auth.js';
 import courseRoutes from './routes/courses.js';
 import chapterRoutes from './routes/chapters.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 connectDB();
@@ -14,7 +15,7 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+app.use(cookieParser());
 // Serve static files
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'public')));
