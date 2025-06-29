@@ -1,6 +1,5 @@
 import express from 'express';
 import Chapter from '../models/Chapter.js';
-import { authenticateUser } from '../middleware/auth.js';
 
 const router = express.Router();
 

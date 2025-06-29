@@ -1,7 +1,6 @@
 import express from 'express';
 import Course from '../models/Course.js';
 import Chapter from '../models/Chapter.js';
-import { authenticateUser, authorizeAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
