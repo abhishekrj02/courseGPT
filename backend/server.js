@@ -4,9 +4,9 @@ import cors from 'cors';
 import path from 'path';
 import errorMiddleware from './middleware/error.middleware.js';
 import connectDB from './db.js';
-import authRoutes from './routes/auth.js';
-import courseRoutes from './routes/courses.js';
-import chapterRoutes from './routes/chapters.js';
+import authRoutes from './routes/user.route.js';
+import courseRoutes from './routes/course.route.js';
+import chapterRoutes from './routes/chapter.route.js';
 import cookieParser from 'cookie-parser';
 
 dotenv.config();
@@ -30,6 +30,8 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/chapters', chapterRoutes);
 
 app.use(errorMiddleware)
-
+app.all('*', (req, res) => {
+    res.status(404).send('Page not found');
+})
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
