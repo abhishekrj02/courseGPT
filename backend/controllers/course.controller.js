@@ -1,13 +1,9 @@
-import express from 'express';
-import Course from '../models/Course';
-import Chapter from '../models/Chapter';
 
-const router = express.Router();
+import Course from "../models/Course.js";
+import Chapter from "../models/Chapter.js";
 
-// Create a new course (Only Admins)
-// router.post('/', authenticateUser, authorizeAdmin, async (req, res) => {
-router.post('/', async (req, res) => {
 
+const createCourse = async (req, res) => {
     try {
         const course = new Course(req.body);
         await course.save();
@@ -15,10 +11,10 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
-});
+};
 
-// Get all courses (Public)
-router.get('/all', async (req, res) => {
+
+const getAllCourses =  async (req, res) => {
     try {
         const courses = await Course.find({ publish: true });
 
@@ -30,9 +26,10 @@ router.get('/all', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch courses" });
     }
-});
+};
 
-router.get('/user', async (req, res) => {
+
+const getAllCoursesByUser = async (req, res) => {
     try {
         const { email } = req.query;
 
@@ -43,21 +40,26 @@ router.get('/user', async (req, res) => {
         const courses = await Course.find({ createdBy: email });
 
         if (!courses.length) {
-            return res.status(404).json({ error: "No courses found for this user" });
+            return res
+                .status(404)
+                .json({ error: "No courses found for this user" });
         }
 
         res.status(200).json(courses);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch user courses" });
     }
-});
+};
 
-router.get('/course', async (req, res) => {
+
+const getCourseById = async (req, res) => {
     try {
         const { courseId, createdBy } = req.query;
 
         if (!courseId || !createdBy) {
-            return res.status(400).json({ error: "Missing courseId or createdBy" });
+            return res
+                .status(400)
+                .json({ error: "Missing courseId or createdBy" });
         }
 
         const course = await Course.findOne({ courseId, createdBy });
@@ -70,13 +72,14 @@ router.get('/course', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch course" });
     }
-});
+};
 
-router.get('/course/all', async (req, res) => {
+
+const getCourse = async (req, res) => {
     try {
         const { courseId } = req.query;
 
-        if (!courseId ) {
+        if (!courseId) {
             return res.status(400).json({ error: "Missing courseId" });
         }
 
@@ -90,9 +93,10 @@ router.get('/course/all', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch course" });
     }
-});
+};
 
-router.put('/publish', async (req, res) => {
+
+const publishCourse = async (req, res) => {
     try {
         const { courseId } = req.body;
         if (!courseId) {
@@ -109,13 +113,17 @@ router.put('/publish', async (req, res) => {
             return res.status(404).json({ error: "Course not found" });
         }
 
-        res.status(200).json({ message: "Course published successfully", course });
+        res.status(200).json({
+            message: "Course published successfully",
+            course,
+        });
     } catch (error) {
         res.status(500).json({ error: "Failed to update course" });
     }
-});
+};
 
-router.delete('/:courseId', async (req, res) => {
+
+const deleteCourse = async (req, res) => {
     try {
         const { courseId } = req.params;
 
@@ -129,10 +137,20 @@ router.delete('/:courseId', async (req, res) => {
         // Delete all chapters linked to this course
         await Chapter.deleteMany({ courseId });
 
-        res.status(200).json({ message: "Course and related chapters deleted successfully" });
+        res.status(200).json({
+            message: "Course and related chapters deleted successfully",
+        });
     } catch (error) {
         res.status(500).json({ error: "Failed to delete course and chapters" });
     }
-});
+};
 
-export default router;
+export {
+    createCourse,
+    getAllCourses,
+    getAllCoursesByUser,
+    getCourse,
+    getCourseById,
+    publishCourse,
+    deleteCourse,
+};

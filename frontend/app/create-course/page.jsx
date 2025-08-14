@@ -38,7 +38,7 @@ function CreateCourse() {
 
   const [loading, setLoading] = useState(false);
   const { userCourseInput, setUserCourseInput } = useContext(UserInputContext);
-  useEffect(() => {}, [userCourseInput]);
+  useEffect(() => { }, [userCourseInput]);
   const [activeIndex, setActiveIndex] = useState(0);
   const maxIndex = 2;
   const router = useRouter();
@@ -74,7 +74,7 @@ function CreateCourse() {
     setLoading(true);
 
     const USER_INPUT_PROMPT = `Generate a course tutorial for following details with field as CourseName, Description(add your own), topic: ${userCourseInput?.topic}, for description ${userCourseInput?.description}, category: ${userCourseInput?.category}, noOfChapters: ${userCourseInput?.noOfChatpers}, totalDuration: ${userCourseInput?.duration}, difficulty: ${userCourseInput?.difficulty}, along with Chapters = chapterName, about, description, duration for each chapter in JSON format`;
-
+    console.log(USER_INPUT_PROMPT)
     const result = await GenerateCourseLayout_AI.sendMessage(USER_INPUT_PROMPT);
     // console.log(JSON.parse(result.response?.text()));
     setLoading(false);
@@ -105,31 +105,31 @@ function CreateCourse() {
     var id = uuid4();
     setLoading(true);
     try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses', {
-            courseId: id,
-            name: userCourseInput?.topic,
-            difficulty: userCourseInput?.difficulty,
-            category: userCourseInput?.category,
-            includeVideo: userCourseInput?.displayVideo,
-            courseOutput: courseLayout,
-            createdBy: user?.primaryEmailAddress?.emailAddress,
-            username: user?.fullName,
-            userProfileImage: user?.imageUrl,
-        });
+      const response = await axios.post(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses', {
+        courseId: id,
+        name: userCourseInput?.topic,
+        difficulty: userCourseInput?.difficulty,
+        category: userCourseInput?.category,
+        includeVideo: userCourseInput?.displayVideo,
+        courseOutput: courseLayout,
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+        username: user?.fullName,
+        userProfileImage: user?.imageUrl,
+      });
 
-        if (response.status === 201) {
-            router.replace("/create-course/" + id);
-        } else {
-            console.error("Error saving course:", response.data);
-            setLoading(false);
-        }
+      if (response.status === 201) {
+        router.replace("/create-course/" + id);
+      } else {
+        console.error("Error saving course:", response.data);
+        setLoading(false);
+      }
     } catch (error) {
-        console.error("Failed to save course:", error);
-        setLoading(false);
+      console.error("Failed to save course:", error);
+      setLoading(false);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   return (
     <div className="mb-8">
