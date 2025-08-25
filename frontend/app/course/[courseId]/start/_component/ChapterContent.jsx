@@ -15,7 +15,7 @@ function ChapterContent({ chapter, content }) {
   return (
     <div className="md:p-10 p-2">
       <h2 className="font-medium text-2xl">{chapter?.chapterName}</h2>
-      <p className="text-gray-500">{chapter?.description}</p>
+      <p className="text-gray-300">{chapter?.description}</p>
 
       {/* video */}
       {content?.videoId == "" ? null : (
@@ -35,7 +35,7 @@ function ChapterContent({ chapter, content }) {
       <div>
         {content?.content?.map((item, index) => (
 
-          <div key={index} className="p-5 bg-sky-50 my-8 rounded-lg">
+          <div key={index} className="p-5 bg-primary/20 my-8 rounded-lg">
             <h2 className="font-medium text-2xl mb-3">{item.title}</h2>
 
             <p>

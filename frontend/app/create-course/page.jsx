@@ -111,13 +111,13 @@ function CreateCourse() {
     <div className="mb-8">
       {/* Stepper */}
       <div className="flex flex-col justify-center items-center mt-10 ">
-        <h2 className="text-4xl text-primary font-medium">Create Course</h2>
+        <h2 className="text-4xl text-white font-medium">Create Course</h2>
         <div className="flex">
           {StepperOptions.map((item, index) => (
             <div key={index} className="flex items-center mt-10">
               <div className="flex flex-col items-center w-[50px] md:w-[100px]">
                 <div
-                  className={`bg-gray-200 p-3 rounded-full text-white
+                  className={`bg-gray-900 p-3 rounded-full text-white
                   ${activeIndex >= index && "bg-primary"}`}
                 >
                   {item.icon}

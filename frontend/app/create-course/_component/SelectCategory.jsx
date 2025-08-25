@@ -21,8 +21,8 @@ function SelectCategory() {
           <div
             key={index}
             className={` flex flex-col p-5 border items-center rounded-xl mb-5 sm:mb-0
-             hover:border-primary hover:bg-sky-50 transition-all duration-300 
-             cursor-pointer ${userCourseInput?.category == item.name && 'bg-sky-50 border-primary'}`}
+              hover:bg-gray-900 transition-all duration-300 
+             cursor-pointer ${userCourseInput?.category == item.name && 'bg-primary border-white'}`}
             onClick={() => handleCategoryChange(item.name)}
           >
             <Image src={item.icon} alt={item.name} width={50} height={50} />

@@ -47,11 +47,11 @@ function SideBar() {
 
     return (
         <div>
-            <div onClick={toggleMenu} className="cursor-pointer fixed md:hidden top-4 left-4 z-50">
-            {isMenuOpen? <Cross1Icon className="text-black w-6 h-6"/>:<HamburgerMenuIcon className="text-black w-8 h-8" />}
+            <div onClick={toggleMenu} className="cursor-pointer fixed md:hidden top-4  left-4 z-50">
+            {isMenuOpen? <Cross1Icon className="text-white w-6 h-6"/>:<HamburgerMenuIcon className="text-white w-8 h-8" />}
             </div>
             {isMenuOpen && (
-                <div className="fixed h-full w-full bg-white md:hidden z-40 p-5 shadow-md">
+                <div className="fixed h-full w-full bg-white/30 backdrop-blur-md md:hidden z-40 p-5 shadow-md">
 
 
                     <div className="md:hidden">
@@ -61,10 +61,10 @@ function SideBar() {
                             {Menu.map((item, index) => (
                                 <Link href={item.path} key={index}>
                                     <div
-                                        className={`flex gap-4 rounded-sm px-6 py-4 text-black hover:bg-sky-50 cursor-pointer transition-all duration-300 ${item.path === path && "bg-sky-50"}`}
+                                        className={`flex gap-4 rounded-sm px-6 py-4 text-white hover:bg-violet-950 cursor-pointer transition-all duration-300 ${item.path === path && "bg-sky-50"}`}
                                     >
                                         <div className="text-xl">{item.icon}</div>
-                                        <div>{item.name}</div>
+                                        <div className="">{item.name}</div>
                                     </div>
                                 </Link>
                             ))}
@@ -84,7 +84,7 @@ function SideBar() {
 
                 </div>)}
 
-            <div className="fixed h-full md:block hidden md:w-64 p-5 shadow-md">
+            <div className="fixed h-full md:block hidden md:w-64 p-5 shadow-md bg-black/30 backdrop-blur-md">
                 <div className="flex gap-4 px=12 justify-center">
                     <Codesandbox />
                     <h1 className="text-xl ">CourseGPT</h1>
@@ -94,7 +94,7 @@ function SideBar() {
                     {Menu.map((item, index) => (
                         <Link href={item.path} key={index}>
                             <div
-                                className={`flex  gap-4 rounded-sm px-6 py-4 text-black hover:bg-sky-50 cursor-pointer transition-all duration-300 ${item.path == path && "bg-sky-50"
+                                className={`flex  gap-4 rounded-sm px-6 py-4 text-white hover:bg-primary/40 cursor-pointer transition-all duration-300 ${item.path == path && "bg-primary/20"
                                     }`}
                             >
                                 <div className="text-xl">{item.icon}</div>

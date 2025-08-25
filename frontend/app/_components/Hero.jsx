@@ -7,18 +7,18 @@ import { Brain, BookOpen, Sparkles } from "lucide-react"
 function Hero() {
   return (
     <div>
-      <section className="bg-gray-50">
+      <section className="">
         <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex  lg:items-center">
           <div className="mx-auto max-w-xl text-center">
             <h1 className="text-3xl font-extrabold sm:text-5xl text-primary">
               CourseGPT
-              <strong className="font-extrabold sm:text-4xl tex-2xl text-black sm:block">
+              <strong className="font-extrabold sm:text-4xl tex-2xl text-white sm:block">
                 AI Course Generator
               </strong>
             </h1>
-            <h2 className="text-lg"> Powered by <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Google Gemini</span></h2>
+            <h2 className="text-lg text-gray-400"> Powered by <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Google Gemini</span></h2>
 
-            <p className="mt-4 sm:text-xl/relaxed text-black">
+            <p className="mt-4 sm:text-xl/relaxed text-white">
               Unlock personalized education with AI-driven course creation.
               Tailor your learning journey to fit your unique goal and pace.
             </p>

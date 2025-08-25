@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import CourseCard from '../_components/CourseCard'
-import Image from 'next/image'
 import axios from 'axios';
 function Explore() {
   const [courses, setCourses] = useState();
@@ -32,12 +31,12 @@ const getAllCourse = async () => {
 
 
   return (
-    <>
+    <div className="relative z-10">
       <h2 className="font-medium text-xl mb-4">Explore More Courses</h2>
       {loading ? (
         // Show loading spinner when fetching data
         <div className="h-[200px] w-full flex items-center justify-center">
-          <Image src={"/loading2.gif"} width={50} height={50} alt="loading" />
+          <div className="loader" />
         </div>
       ) : courses?.length > 0 ? (
         // Show courses when data is available
@@ -57,7 +56,7 @@ const getAllCourse = async () => {
           <p>No courses to show</p>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

@@ -1,5 +1,3 @@
-import { Progress } from "@/components/ui/progress";
-import { UserButton } from "@clerk/nextjs";
 import React from "react";
 import AddCourse from "./_components/AddCourse";
 import UserCourseList from "./_components/UserCourseList";
@@ -7,8 +5,10 @@ import UserCourseList from "./_components/UserCourseList";
 function Dashboard() {
   return (
     <>
-      <AddCourse />
-      <UserCourseList />
+      <div className="relative z-10">
+        <AddCourse />
+        <UserCourseList />
+      </div>
     </>
   );
 }
