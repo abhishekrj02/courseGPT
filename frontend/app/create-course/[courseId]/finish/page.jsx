@@ -1,8 +1,5 @@
 "use client";
-import { db } from "@/config/db";
-import { CourseList } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
-import { and, eq } from "drizzle-orm";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import CourseBasicInfo from "../_components/CourseBasicInfo";
@@ -18,18 +15,6 @@ function FinishScreen() {
     params && GetCourse();
   }, [params, user]);
 
-  const GetCourseOld = async () => {
-    const result = await db
-      .select()
-      .from(CourseList)
-      .where(
-        and(
-          eq(CourseList?.courseId, params?.courseId),
-          eq(CourseList?.createdBy, user?.primaryEmailAddress?.emailAddress)
-        )
-      );
-    setCourse(result[0]);
-  };
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {

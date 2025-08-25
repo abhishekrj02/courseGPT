@@ -1,9 +1,8 @@
 import { CheckboxIcon } from "@radix-ui/react-icons";
 import { TimerIcon } from "lucide-react";
 import React from "react";
-import EditChapters from "./EditChapters";
 
-function ChapterList({ course, refreshData, edit }) {
+function ChapterList({ course, refreshData}) {
   return (
     <div className="mt-3">
       <h2 className="font-medium text-xl">Chapters</h2>
@@ -23,13 +22,6 @@ function ChapterList({ course, refreshData, edit }) {
                     <h3 className="font-medium text-lg">
                       {chapter.chapterName}
                     </h3>
-                    {edit && (
-                      <EditChapters
-                        course={course}
-                        index={index}
-                        refreshData={() => refreshData(true)}
-                      />
-                    )}
                   </div>
                   {/* <p className="text-lg text-gray-500 text-justify">
                                     {chapter.about}

@@ -8,11 +8,8 @@ import SelectOption from "./_component/SelectOption";
 import { UserInputContext } from "../_context/UserInputContext";
 import { GenerateCourseLayout_AI } from "@/config/AiModel";
 import LoadingDialog from "./_component/LoadingDialog";
-import { db } from "@/config/db";
 import { useUser } from "@clerk/nextjs";
 import uuid4 from "uuid4";
-import { CourseList } from "@/config/schema";
-// import { useRouter } from "next/router";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -74,32 +71,11 @@ function CreateCourse() {
     setLoading(true);
 
     const USER_INPUT_PROMPT = `Generate a course tutorial for following details with field as CourseName, Description(add your own), topic: ${userCourseInput?.topic}, for description ${userCourseInput?.description}, category: ${userCourseInput?.category}, noOfChapters: ${userCourseInput?.noOfChatpers}, totalDuration: ${userCourseInput?.duration}, difficulty: ${userCourseInput?.difficulty}, along with Chapters = chapterName, about, description, duration for each chapter in JSON format`;
-    console.log(USER_INPUT_PROMPT)
     const result = await GenerateCourseLayout_AI.sendMessage(USER_INPUT_PROMPT);
-    // console.log(JSON.parse(result.response?.text()));
     setLoading(false);
     SaveCourseLayoutInDb(JSON.parse(result.response?.text()));
-    console.log(userCourseInput);
   };
 
-  const SaveCourseLayoutInDbOld = async (courseLayout) => {
-    var id = uuid4();
-    setLoading(true);
-    const result = await db.insert(CourseList).values({
-      courseId: id,
-      name: userCourseInput?.topic,
-      difficulty: userCourseInput?.difficulty,
-      category: userCourseInput?.category,
-      includeVideo: userCourseInput?.displayVideo,
-      courseOutput: courseLayout,
-      createdBy: user?.primaryEmailAddress?.emailAddress,
-      username: user?.fullName,
-      userProfileImage: user?.imageUrl,
-    });
-    // console.log("Finish");
-    setLoading(false);
-    router.replace("/create-course/" + id);
-  };
 
   const SaveCourseLayoutInDb = async (courseLayout) => {
     var id = uuid4();

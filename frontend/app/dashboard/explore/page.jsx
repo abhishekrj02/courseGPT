@@ -1,7 +1,4 @@
 'use client'
-import { db } from '@/config/db'
-import { CourseList } from '@/config/schema'
-import { eq } from 'drizzle-orm'
 import React, { useEffect, useState } from 'react'
 import CourseCard from '../_components/CourseCard'
 import Image from 'next/image'
@@ -13,15 +10,6 @@ function Explore() {
   }, [])
   const [loading, setLoading] = useState(true);
 
-  const getAllCourseOld = async () => {
-    setLoading(true);
-    const result = await db.select().from(CourseList)
-      .where(eq(CourseList.publish, true))
-      // .limit(10)
-      .offset(0);
-    setCourses(result);
-    setLoading(false);
-  }
 
 
 const getAllCourse = async () => {

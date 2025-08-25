@@ -1,7 +1,4 @@
 "use client";
-import { db } from "@/config/db";
-import { Chapters, CourseList } from "@/config/schema";
-import { and, eq } from "drizzle-orm";
 import React, { useEffect, useRef, useState } from "react";
 import ChapterListCard from "./_component/ChapterListCard";
 import ChapterContent from "./_component/ChapterContent";
@@ -17,17 +14,6 @@ function StartCourse() {
   useEffect(() => {
     GetCourse();
   }, []);
-
-  const GetCourseOld = async () => {
-    const result = await db
-      .select()
-      .from(CourseList)
-      .where(eq(CourseList?.courseId, params?.courseId));
-    setCourse(result[0]);
-    setSelectedChapter(result[0].courseOutput?.Chapters[0])
-    getSelectedChapterContent(0);
-  };
-
 
 const GetCourse = async () => {
     try {
@@ -47,20 +33,7 @@ const GetCourse = async () => {
         console.error("Failed to fetch course:", error);
     }
 };
-  const getSelectedChapterContentOld = async (index) => {
-    const result = await db
-      .select()
-      .from(Chapters)
-      .where(
-        and(
-          eq(Chapters.courseId, params?.courseId),
-          eq(Chapters.chapterId, index)
-        )
-      );
-    // console.log(result);
-    setChaptercontent(result[0]);
-    // console.log(chapterContent);
-  };
+
   const getSelectedChapterContent = async (index) => {
     try {
         const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/chapters', {

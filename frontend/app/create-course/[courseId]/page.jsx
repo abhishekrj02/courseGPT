@@ -1,10 +1,7 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import axios from 'axios';
-import { db } from "@/config/db";
-import { Chapters, CourseList } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
-import { and, eq } from "drizzle-orm";
 import React, { useEffect, useState } from "react";
 import CourseBasicInfo from "./_components/CourseBasicInfo";
 import CourseDetail from "./_components/CourseDetail";
@@ -57,7 +54,6 @@ function CourseLayout() {
         try {
           // Generate AI-generated chapter content
           const result = await GenerateChapterContent_AI.sendMessage(PROMPT2);
-          console.log(result);
           const content = JSON.parse(result?.response?.text());
 
           // Fetch video ID (if applicable)
@@ -65,7 +61,6 @@ function CourseLayout() {
           await serivce
             .getVideos(course?.name + ":" + chapter?.chapterName)
             .then((resp) => {
-              console.log(resp);
               videoId = resp[0]?.id?.videoId;
             });
 
@@ -105,7 +100,7 @@ function CourseLayout() {
     <div className="mt-10 px-7 md:px-20 lg-px-44">
       {!course?.publish && <h2 className="font-bold text-center text-2xl">Course Layout</h2>}
       <LoadingDialog loading={loading} />
-      <CourseBasicInfo course={course} refreshData={() => GetCourse()} edit={!course?.publish} />
+      <CourseBasicInfo course={course} refreshData={() => GetCourse()}/>
       <CourseDetail course={course} />
       <ChapterList course={course} refreshData={() => GetCourse()} edit={!course?.publish} />
       {course?.publish && <p className="text-right text-gray-600 text-xs">*Course already generated</p>}

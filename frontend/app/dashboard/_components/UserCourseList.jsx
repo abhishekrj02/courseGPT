@@ -1,8 +1,5 @@
 "use client";
-import { db } from "@/config/db";
-import { CourseList } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
 import React, { useContext, useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 import Image from "next/image";
@@ -19,17 +16,6 @@ function UserCourseList() {
     user && getUserCourses();
   }, [user]);
   
-  const getUserCoursesOld = async () => {
-    setLoading(true);
-    const result = await db
-      .select()
-      .from(CourseList)
-      .where(eq(CourseList?.createdBy, user.primaryEmailAddress.emailAddress));
-    // console.log(result);
-    setCourseList(result);
-    setUserCourseList(result);
-    setLoading(false);
-  };
   const getUserCourses = async () => {
     try {
         setLoading(true);

@@ -3,22 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import Dropdown from "./Dropdown";
-import { db } from "@/config/db";
-import { CourseList } from "@/config/schema";
-import { eq } from "drizzle-orm";
 import axios from 'axios';
 
 function CourseCard({ course, refreshData, viewOnly }) {
-  const deleteCourseOld = async () => {
-    const resp = await db
-      .delete(CourseList)
-      .where(eq(CourseList.id, course?.id))
-      .returning({ id: CourseList?.id });
 
-    if (resp) {
-      refreshData();
-    }
-  };
 const deleteCourse = async (courseId) => {
     try {
         const response = await axios.delete( process.env.NEXT_PUBLIC_SERVER_URL +`/api/courses/${courseId}`);
@@ -62,7 +50,7 @@ const deleteCourse = async (courseId) => {
         </div>
         {viewOnly && <div className="flex  text-gray-600 text-sm gap-2 items-center mt-2">
           {/* <h2>Published By: </h2> */}
-          <Image src={course?.userProfileImage} height={20} width={20} className="rounded-full" />
+          <Image alt="profile" src={course?.userProfileImage} height={20} width={20} className="rounded-full" />
           <h2>{course?.username}</h2>
 
         </div>
