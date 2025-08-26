@@ -75,14 +75,14 @@ function StartCourse() {
         <div>
           {/* chapter list sidebar */}
           <div className="fixed md:w-72 hidden md:block h-screen bg-black/40 shadow-md overflow-y-scroll custom-scrollbar">
-            <h2 className="font-medium text-lg p-3 text-white bg-primary/50">
+            <h2 className="font-medium text-lg p-3 text-white bg-primary/80">
               {course?.courseOutput?.CourseName}
             </h2>
             <div>
               {course?.courseOutput?.Chapters.map((chapter, index) => (
                 <div
                   key={index}
-                  className={`cursor-pointer hover:bg-primary/10 transition-all duration-200 ${selectedChapter == chapter ? "bg-primary/10" : ""
+                  className={`cursor-pointer hover:bg-primary/30 transition-all duration-200 ${selectedChapter == chapter ? "bg-primary/30" : ""
                     }`}
                   onClick={() => {
 

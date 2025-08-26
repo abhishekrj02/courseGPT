@@ -35,7 +35,7 @@ function ChapterContent({ chapter, content }) {
       <div>
         {content?.content?.map((item, index) => (
 
-          <div key={index} className="p-5 bg-primary/20 my-8 rounded-lg">
+          <div key={index} className="p-5 bg-primary/60 my-8 rounded-lg">
             <h2 className="font-medium text-2xl mb-3">{item.title}</h2>
 
             <p>

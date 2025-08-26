@@ -5,7 +5,7 @@ function ChapterListCard({chapter, index}) {
   return (
     <div className='grid grid-cols-5 py-3 px-2 items-center border-b'>
       <div>
-        <h2 className='p-1 bg-primary/40 text-white rounded-3xl w-8 h-8 text-center '>{index+1}</h2>
+        <h2 className='p-1 bg-primary/80 text-white rounded-3xl w-8 h-8 text-center '>{index+1}</h2>
       </div>
       <div className='col-span-4'>
         <h2 className='font-medium'>{chapter.chapterName}</h2>
