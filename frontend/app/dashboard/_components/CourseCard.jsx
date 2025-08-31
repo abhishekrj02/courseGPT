@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import Dropdown from "./Dropdown";
 import axios from 'axios';
-
+import courseBanner from "@/public/banner2.jpg"
 function CourseCard({ course, refreshData, viewOnly }) {
 
 const deleteCourse = async (courseId) => {
@@ -26,7 +26,8 @@ const deleteCourse = async (courseId) => {
     <div className="hover:shadow-xl shadow-lg border rounded-lg transition-all duration-200 ">
       <Link href={`/course/${course?.courseId}`}>
         <Image
-          src={course?.courseBanner}
+          src={courseBanner}
+          // src={course?.courseBanner}
           width={300}
           height={200}
           alt="banner"
