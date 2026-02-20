@@ -1,103 +1,63 @@
 import React, { useContext } from "react";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { UserInputContext } from "@/app/_context/UserInputContext";
 
+const FIELDS = [
+  { key: "difficulty",   label: "Difficulty",          required: true,  type: "select", placeholder: "Select level",    options: ["Beginner", "Intermediate", "Advance"] },
+  { key: "duration",     label: "Course Duration",      required: true,  type: "select", placeholder: "Select duration", options: ["1 hour", "2 hours", "3+ hours"] },
+  { key: "displayVideo", label: "Include Videos",       required: false, type: "select", placeholder: "Yes",             options: ["Yes", "No"] },
+  { key: "noOfChapters", label: "Number of Chapters",   required: false, type: "number", placeholder: "e.g. 5" },
+];
+
 function SelectOption() {
-    const { userCourseInput, setUserCourseInput } =
-        useContext(UserInputContext);
+  const { userCourseInput, setUserCourseInput } = useContext(UserInputContext);
 
-    const handleInputChange = (fieldName, value) => {
-        setUserCourseInput((prev) => ({
-            ...prev,
-            [fieldName]: value,
-        }));
-    };
-    return (
-        <div className="sm:px-10 md:px-20 lg:px-44 mb-8">
-            <div className="grid grid-cols-2 gap-10">
-                <div>
-                    <label>Difficulty*</label>
-                    <Select
-                        onValueChange={(value) =>
-                            handleInputChange("difficulty", value)
-                        }
-                        defaultValue={userCourseInput?.difficulty}
-                    >
-                        <SelectTrigger className="">
-                            <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="Beginner">Beginner</SelectItem>
-                            <SelectItem value="Intermediate">Intermediate</SelectItem>
-                            <SelectItem value="Advance">Advance</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
+  const handleInputChange = (fieldName, value) => {
+    setUserCourseInput((prev) => ({ ...prev, [fieldName]: value }));
+  };
 
-                <div>
-                    <label>Course Duration*</label>
-                    <Select
-                        onValueChange={(value) =>
-                            handleInputChange("duration", value)
-                        }
-                        defaultValue={userCourseInput?.duration}
-                    >
-                        <SelectTrigger className="">
-                            <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="1 hour">1 hour</SelectItem>
-                            <SelectItem value="2 hours">2 hours</SelectItem>
-                            <SelectItem value="3+ hours">
-                                3+ hours
-                            </SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                <div>
-                    <label>Add Video</label>
-                    <Select
-                        onValueChange={(value) =>
-                            handleInputChange("displayVideo", value)
-                        }
-                        defaultValue={userCourseInput?.displayVideo}
-                    >
-                        <SelectTrigger className="">
-                            <SelectValue placeholder="Yes" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="Yes">Yes</SelectItem>
-                            <SelectItem value="No">No</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                <div>
-                    <label className="text-sm">Number of Chapters</label>
-                    <Input
-                        type="number"
-                        onChange={(e) =>
-                            handleInputChange("noOfChatpers", e.target.value)
-                        }
-                        defaultValue={userCourseInput?.noOfChatpers}
-                    />
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <p className="text-xs text-muted-foreground uppercase tracking-widest mb-2">Step 3</p>
+      <h2 className="text-lg font-semibold text-foreground mb-6">Configure your course</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {FIELDS.map((field) => (
+          <div key={field.key}>
+            <label className="text-sm text-foreground block mb-2">
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </label>
+            {field.type === "select" ? (
+              <Select
+                onValueChange={(v) => handleInputChange(field.key, v)}
+                defaultValue={userCourseInput?.[field.key]}
+              >
+                <SelectTrigger className="rounded-xl h-11">
+                  <SelectValue placeholder={field.placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {field.options.map((opt) => (
+                    <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Input
+                type="number"
+                placeholder={field.placeholder}
+                className="h-11 rounded-xl"
+                onChange={(e) => handleInputChange(field.key, e.target.value)}
+                defaultValue={userCourseInput?.[field.key]}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
-/*
-Generate a course tutorial on following details with field
-as Course Name, Description, Along with Chapter Name, about, Duration:,Category:
-'Programming',Topic:Python, level: intermediate, duration: 3+ hours noOfChapters:20, in JSON format
-*/
 
 export default SelectOption;

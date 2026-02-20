@@ -145,6 +145,24 @@ const deleteCourse = async (req, res) => {
     }
 };
 
+const updateCourseBanner = async (req, res) => {
+    try {
+        const { courseId, courseBanner } = req.body;
+        if (!courseId || !courseBanner) {
+            return res.status(400).json({ error: "Missing courseId or courseBanner" });
+        }
+        const course = await Course.findOneAndUpdate(
+            { courseId },
+            { courseBanner },
+            { new: true }
+        );
+        if (!course) return res.status(404).json({ error: "Course not found" });
+        res.status(200).json(course);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update banner" });
+    }
+};
+
 export {
     createCourse,
     getAllCourses,
@@ -153,4 +171,5 @@ export {
     getCourseById,
     publishCourse,
     deleteCourse,
+    updateCourseBanner,
 };

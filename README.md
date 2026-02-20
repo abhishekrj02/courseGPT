@@ -1,87 +1,143 @@
 # CourseGPT
 
-CourseGPT is an AI-powered platform that generates personalized courses based on user preferences and needs. The application uses Next.js, Tailwind CSS, ShadCN components, Clerk for user authentication, Drizzle PostgreSQL ORM for database management, and Firebase Storage for file storage.
+CourseGPT is an AI-powered platform that instantly generates personalized courses based on your topic, difficulty, and preferences. Built with Next.js and powered by Google Gemini, it delivers structured course content with chapters, quizzes, and a built-in AI course assistant.
 
 ---
 
-## 🚀 Features
+## Features
 
-- **AI Course Generation**: Generate personalized courses using AI based on user input.
-- **Authentication**: Secure login and registration via Clerk.
-- **Database Management**: Use Drizzle PostgreSQL ORM for efficient database interaction.
-- **File Storage**: Integrated Firebase Storage for user-uploaded file handling.
-- **Admin Interface**: Access database management using Drizzle Studio.
-- **User-Friendly UI**: Designed with Tailwind CSS and ShadCN pre-built components.
+- **AI Course Generation** — Generate full courses with chapters and content using Google Gemini
+- **Course Assistant Chatbox** — Floating AI chatbot on every course page, context-aware of the course topic
+- **Light / Dark Theme** — Toggle between light and dark mode with localStorage persistence
+- **Thumbnail Upload** — Upload custom course banners via Firebase Storage
+- **Collapsible Sidebar** — Desktop sidebar collapses to icon-only mode
+- **Authentication** — Secure sign-in and user sessions via Clerk
+- **Explore Courses** — Browse all publicly published courses
+- **Mobile Friendly** — Responsive layout with mobile chapter drawer on course pages
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
-- **Next.js**: Framework for server-side rendering and optimized frontend development.
-- **Tailwind CSS**: A utility-first CSS framework for fast and responsive UI design.
-- **ShadCN Components**: A set of pre-built UI components for faster design and prototyping.
+- **Next.js 15** — App Router, server components, and API routes
+- **Tailwind CSS** — Utility-first styling with semantic dark/light mode tokens
+- **shadcn/ui** — Pre-built accessible UI components
+- **Clerk** — Authentication and user management
+- **Firebase Storage** — Course banner image uploads
+- **Google Gemini** (`gemini-2.5-flash`) — AI course and content generation
+- **Axios** — HTTP client for API calls
+- **Lucide React** — Icon library
 
 ### Backend
-- **Drizzle PostgreSQL ORM**: Efficient database schema management and queries with PostgreSQL.
-- **Clerk Provider**: Authentication mechanism for secure user sessions.
-- **Firebase Storage**: Secure, scalable cloud storage for image uploads.
+- **Express.js** — REST API server
+- **MongoDB + Mongoose** — Database and schema modeling
+- **Clerk SDK** — Server-side auth middleware
 
 ---
 
-## 💻 Installation
+## Project Structure
+
+```
+CourseGPT/
+├── frontend/          # Next.js app
+│   ├── app/
+│   │   ├── api/chat/  # Chat API route (Gemini)
+│   │   ├── course/    # Course viewer pages
+│   │   ├── create-course/  # Course creation flow
+│   │   ├── dashboard/ # User dashboard
+│   │   └── _context/  # Theme + user context providers
+│   └── config/        # Firebase + AI model config
+└── backend/           # Express REST API
+    ├── controllers/
+    ├── models/
+    ├── routes/
+    └── middleware/
+```
+
+---
+
+## Getting Started
 
 ### Prerequisites
-Make sure you have the following:
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- A [Firebase](https://firebase.google.com/) account
+- [Node.js](https://nodejs.org/) v18+
+- A [MongoDB](https://www.mongodb.com/) database
+- A [Firebase](https://firebase.google.com/) project (Storage enabled)
+- A [Clerk](https://clerk.com/) app
+- A [Google Gemini](https://ai.google.dev/) API key
 
----
-
-### Clone Repository
-First, clone the repository:
+### Clone the repo
 
 ```bash
 git clone https://github.com/abhishekrj02/CourseGPT.git
 cd CourseGPT
 ```
-### Start the Development Server
-Finally, start the development server:
+
+### Setup Backend
+
+```bash
+cd backend
+npm install
+```
+
+Create `backend/.env`:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+CLERK_SECRET_KEY=your_clerk_secret_key
+PORT=5000
+```
+
+Start the backend:
+
+```bash
+npm start
+```
+
+### Setup Frontend
+
+```bash
+cd frontend
+npm install
+```
+
+Create `frontend/.env.local`:
+
+```env
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
+NEXT_PUBLIC_SERVER_URL=http://localhost:5000
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
+
+Start the frontend:
+
 ```bash
 npm run dev
 ```
-Visit http://localhost:3000 to explore the application.
 
-### Open Drizzle Studio
-To interact with your database schema visually, launch Drizzle Studio:
-```bash
-npm run db:studio
-```
+Visit [http://localhost:3000](http://localhost:3000)
 
-### Update Database Schema
-Apply the database schema migrations:
-```bash
-npm run db:push
-```
 ---
 
-## 🤝 Contributing
-We welcome contributions! If you find bugs, have ideas, or want to improve features, feel free to fork the repo and submit a pull request.
+## Contributing
 
-### Steps to Contribute
-- Fork the repository.
-- Create a new branch:
+Contributions are welcome! Fork the repo, create a feature branch, and open a pull request.
+
 ```bash
 git checkout -b feature/your-feature
-```
-- Make your changes and commit them:
-```bash
-git commit -m "Add a feature or fix a bug"
-```
-- Push your branch:
-```bash
+git commit -m "Add your feature"
 git push origin feature/your-feature
 ```
-- Open a Pull Request with a description of your changes.
 
 ---
+
+## License
+
+MIT

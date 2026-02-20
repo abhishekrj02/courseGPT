@@ -1,41 +1,34 @@
-import { CheckboxIcon } from "@radix-ui/react-icons";
-import { TimerIcon } from "lucide-react";
+import { CheckCircle2, TimerIcon } from "lucide-react";
 import React from "react";
 
-function ChapterList({ course, refreshData}) {
+function ChapterList({ course }) {
+  const chapters = course?.courseOutput?.Chapters ?? [];
+
   return (
-    <div className="mt-3">
-      <h2 className="font-medium text-xl">Chapters</h2>
-      <div className="mt-2">
-        {course?.courseOutput?.Chapters.map((chapter, index) =>
+    <div className="mt-4">
+      <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3 flex items-center gap-2">
+        <CheckCircle2 className="h-4 w-4 text-blue-500" />
+        Chapters
+      </h2>
+      <div className="space-y-2">
+        {chapters.map((chapter, index) =>
           chapter?.chapterName && chapter?.description ? (
             <div
               key={index}
-              className="border p-5 rounded-lg mb-2 flex justify-between items-end"
+              className="border border-border bg-card p-4 rounded-xl flex items-start gap-4 hover:bg-muted/50 transition-colors"
             >
-              <div className="flex gap-5">
-                <div className="bg-primary h-10 w-10 min-w-10 mt-2 text-white rounded-full flex items-center justify-center">
-                  {index + 1}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium text-lg">
-                      {chapter.chapterName}
-                    </h3>
-                  </div>
-                  {/* <p className="text-lg text-gray-500 text-justify">
-                                    {chapter.about}
-                                </p> */}
-                  <p className="text-sm text-gray-600 text-justify">
-                    {chapter.description}
-                  </p>
-                  <p className="flex gap-2 text-gray-500 items-center mt-1">
-                    <TimerIcon />
-                    {chapter.duration}
-                  </p>
-                </div>
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/15 border border-primary/30 text-foreground text-sm font-semibold flex items-center justify-center">
+                {index + 1}
               </div>
-              <CheckboxIcon className="h-6 w-6 min-w-6 text-primary" />
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium text-sm text-foreground leading-snug">{chapter.chapterName}</h3>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed line-clamp-2">{chapter.description}</p>
+                <p className="flex items-center gap-1.5 text-xs text-muted-foreground/70 mt-2">
+                  <TimerIcon className="h-3.5 w-3.5" />
+                  {chapter.duration}
+                </p>
+              </div>
+              <CheckCircle2 className="h-4 w-4 text-blue-400/50 flex-shrink-0 mt-0.5" />
             </div>
           ) : null
         )}

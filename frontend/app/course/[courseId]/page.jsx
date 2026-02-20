@@ -7,54 +7,38 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-
 function Course() {
   const [course, setCourse] = useState();
   const params = useParams();
-  useEffect(() => {
-    params && GetCourse();
-  }, [params]);
 
+  useEffect(() => {
+    if (params) GetCourse();
+  }, [params]);
 
   const GetCourse = async () => {
     try {
-      const response = await axios.get(process.env.NEXT_PUBLIC_SERVER_URL + '/api/courses/course/all', {
-        params: {
-          courseId: params?.courseId,
-        }
-      });
-
-      if (response.status === 200) {
-        setCourse(response.data);
-      } else {
-        console.error("Course not found:", response.data);
-      }
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_SERVER_URL + "/api/courses/course/all",
+        { params: { courseId: params?.courseId } }
+      );
+      if (response.status === 200) setCourse(response.data);
     } catch (error) {
       console.error("Failed to fetch course:", error);
     }
   };
+
   return (
-    <div className="min-h-screen w-full relative bg-black">
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(120, 180, 255, 0.25), transparent 70%), #000000",
-        }}
-      />
-      <Header />
+    <div className="min-h-screen w-full relative bg-background">
+      <div className="absolute inset-0 z-0 pointer-events-none app-gradient" />
       <div className="relative z-10">
-        <div className="my-10 px-7 md:px-20 lg-px-44">
-          {/* <LoadingDialog loading={loading} /> */}
-          <CourseBasicInfo course={course} />
+        <Header />
+        <div className="px-6 md:px-20 lg:px-44 pb-16">
+          <CourseBasicInfo course={course} edit={false} />
           <CourseDetail course={course} />
           <ChapterList course={course} />
         </div>
       </div>
     </div>
-
-
-
   );
 }
 

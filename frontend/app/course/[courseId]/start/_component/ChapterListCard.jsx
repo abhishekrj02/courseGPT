@@ -1,18 +1,27 @@
-import { AlarmClockMinus, Clock3Icon } from 'lucide-react';
-import React from 'react'
+import { Clock3Icon } from 'lucide-react';
+import React from 'react';
 
-function ChapterListCard({chapter, index}) {
+function ChapterListCard({ chapter, index, active }) {
   return (
-    <div className='grid grid-cols-5 py-3 px-2 items-center border-b'>
-      <div>
-        <h2 className='p-1 bg-primary/80 text-white rounded-3xl w-8 h-8 text-center '>{index+1}</h2>
+    <div className={`flex items-start gap-3 px-4 py-3.5 border-b border-border transition-all duration-200
+      ${active ? 'bg-primary/10 dark:bg-primary/20' : 'hover:bg-muted/60'}`}
+    >
+      <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mt-0.5
+        ${active ? 'bg-blue-500 text-white' : 'bg-muted text-muted-foreground'}`}
+      >
+        {index + 1}
       </div>
-      <div className='col-span-4'>
-        <h2 className='font-medium'>{chapter.chapterName}</h2>
-        <h2 className='flex items-center gap-2 text-neutral-400 text-sm'><Clock3Icon className='h-5 w-5'/>{chapter.duration}</h2>
+      <div className="min-w-0">
+        <p className={`text-sm font-medium leading-snug ${active ? 'text-foreground' : 'text-muted-foreground'}`}>
+          {chapter.chapterName}
+        </p>
+        <p className="flex items-center gap-1 text-xs text-muted-foreground/70 mt-0.5">
+          <Clock3Icon className="h-3 w-3" />
+          {chapter.duration}
+        </p>
       </div>
     </div>
-  )
+  );
 }
 
 export default ChapterListCard;

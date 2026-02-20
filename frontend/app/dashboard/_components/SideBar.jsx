@@ -1,121 +1,156 @@
 "use client";
 import React, { useContext, useState } from "react";
-import logo from "../../../public/logo.svg";
-import Image from "next/image";
-import { Box, Codesandbox, FileStackIcon, Home, LogOutIcon, Shield } from "lucide-react";
+import {
+  BookOpen, ChevronLeft, ChevronRight,
+  Compass, Home, LogOut, Menu, Shield, X,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { UserCourseListContext } from "@/app/_context/UserCourseListContext";
-import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { Close } from "@radix-ui/react-dialog";
-function SideBar() {
-    const { userCourseList, setUserCourseList } = useContext(UserCourseListContext)
-    const Menu = [
-        {
-            id: 1,
-            name: "Home",
-            icon: <Home />,
-            path: "/dashboard",
-        },
-        {
-            id: 2,
-            name: "Explore",
-            icon: <FileStackIcon />,
-            path: "/dashboard/explore",
-        },
-        {
-            id: 3,
-            name: "Upgrade",
-            icon: <Shield />,
-            path: "/dashboard/upgrade",
-        },
-        {
-            id: 4,
-            name: "Logout",
-            icon: <LogOutIcon />,
-            path: "/",
-        },
-    ];
-    const path = usePathname();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // Function to toggle the menu visibility
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+const MENU_ITEMS = [
+  { id: 1, name: "Home",    icon: Home,    path: "/dashboard" },
+  { id: 2, name: "Explore", icon: Compass, path: "/dashboard/explore" },
+  { id: 3, name: "Upgrade", icon: Shield,  path: "/dashboard/upgrade" },
+  { id: 4, name: "Logout",  icon: LogOut,  path: "/" },
+];
 
+function NavItem({ item, path, collapsed, onClick }) {
+  const Icon = item.icon;
+  const active = item.path === path;
+  return (
+    <li>
+      <Link href={item.path} onClick={onClick} title={collapsed ? item.name : undefined}>
+        <div className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer group border-l-2
+          ${collapsed ? "justify-center" : ""}
+          ${active
+            ? "bg-primary/15 dark:bg-primary/25 border-blue-500 text-foreground"
+            : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          <Icon className={`flex-shrink-0 h-[18px] w-[18px] transition-colors
+            ${active ? "text-blue-500" : "text-muted-foreground group-hover:text-foreground"}`}
+          />
+          {!collapsed && (
+            <span className="text-sm font-medium whitespace-nowrap">{item.name}</span>
+          )}
+        </div>
+      </Link>
+    </li>
+  );
+}
+
+function QuotaSection({ quota, collapsed }) {
+  const pct = (quota / 15) * 100;
+  if (collapsed) {
     return (
-        <div>
-            <div onClick={toggleMenu} className="cursor-pointer fixed md:hidden top-4  left-4 z-50">
-            {isMenuOpen? <Cross1Icon className="text-white w-6 h-6"/>:<HamburgerMenuIcon className="text-white w-8 h-8" />}
+      <div className="flex flex-col items-center gap-1 px-2">
+        <div className="w-8 h-1.5 rounded-full bg-border overflow-hidden">
+          <div className="h-full bg-blue-500 rounded-full" style={{ width: `${pct}%` }} />
+        </div>
+        <span className="text-[10px] text-muted-foreground">{quota}/15</span>
+      </div>
+    );
+  }
+  return (
+    <div className="space-y-2 px-2">
+      <div className="flex justify-between text-xs text-muted-foreground mb-1">
+        <span>Course quota</span>
+        <span className="text-foreground font-medium">{quota} / 15</span>
+      </div>
+      <Progress value={pct} className="h-1.5" />
+      <p className="text-xs text-muted-foreground text-center pt-1">
+        Upgrade for unlimited generation
+      </p>
+    </div>
+  );
+}
+
+function SideBar({ collapsed, onToggle }) {
+  const { userCourseList } = useContext(UserCourseListContext);
+  const path = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const quota = userCourseList?.length ?? 0;
+
+  const sidebarBase = "flex flex-col bg-background/90 dark:bg-black/50 backdrop-blur-xl border-r border-border";
+
+  return (
+    <>
+      {/* Mobile hamburger */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-muted text-foreground hover:bg-muted/80 transition-all"
+        aria-label="Open menu"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className={`absolute left-0 top-0 h-full w-64 ${sidebarBase} p-5 shadow-2xl`}>
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-2.5">
+                <BookOpen className="h-5 w-5 text-blue-500" />
+                <span className="text-base font-semibold text-foreground tracking-tight">CourseGPT</span>
+              </div>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted transition"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
-            {isMenuOpen && (
-                <div className="fixed h-full w-full bg-white/30 backdrop-blur-md md:hidden z-40 p-5 shadow-md">
-
-
-                    <div className="md:hidden">
-                        <h1 className="text-xl text-center">CourseGPT</h1>
-                        <hr className="my-5" />
-                        <ul>
-                            {Menu.map((item, index) => (
-                                <Link href={item.path} key={index}>
-                                    <div
-                                        className={`flex gap-4 rounded-sm px-6 py-4 text-white hover:bg-violet-950 cursor-pointer transition-all duration-300 ${item.path === path && "bg-sky-50"}`}
-                                    >
-                                        <div className="text-xl">{item.icon}</div>
-                                        <div className="">{item.name}</div>
-                                    </div>
-                                </Link>
-                            ))}
-                        </ul>
-                        <div className="flex items-center justify-center h-full">
-                            <div className="absolute bottom-10 w-[80%]">
-                                <Progress value={(userCourseList?.length / 15) * 100} />
-                                <h2 className="text-sm my-2 text-center">
-                                    {userCourseList?.length} Out of 15 Courses Created
-                                </h2>
-                                <h2 className="text-xs text-center text-gray-500">
-                                    Upgrade your plan for unlimited course generation.
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>)}
-
-            <div className="fixed h-full md:block hidden md:w-64 p-5 shadow-md bg-black/30 backdrop-blur-md">
-                <div className="flex gap-4 px=12 justify-center">
-                    <Codesandbox />
-                    <h1 className="text-xl ">CourseGPT</h1>
-                </div>
-                <hr className="my-5" />
-                <ul>
-                    {Menu.map((item, index) => (
-                        <Link href={item.path} key={index}>
-                            <div
-                                className={`flex  gap-4 rounded-sm px-6 py-4 text-white hover:bg-primary/40 cursor-pointer transition-all duration-300 ${item.path == path && "bg-primary/20"
-                                    }`}
-                            >
-                                <div className="text-xl">{item.icon}</div>
-                                <div>{item.name}</div>
-                            </div>
-                        </Link>
-                    ))}
-                </ul>
-                <div className="absolute bottom-10 w-[80%]">
-                    <Progress value={(userCourseList?.length) / 15 * 100} />
-                    <h2 className="text-sm my-2 text-center">
-                        {userCourseList?.length} Out of 15 Course Created
-                    </h2>
-                    <h2 className="text-xs text-center  text-gray-500">
-                        Upgrade your plan for unlimited course generation.
-                    </h2>
-                </div>
+            <p className="text-xs text-muted-foreground uppercase tracking-widest px-2 mb-3">Menu</p>
+            <ul className="space-y-1">
+              {MENU_ITEMS.map(item => (
+                <NavItem key={item.id} item={item} path={path} collapsed={false} onClick={() => setMobileOpen(false)} />
+              ))}
+            </ul>
+            <div className="mt-auto pt-5 border-t border-border">
+              <QuotaSection quota={quota} collapsed={false} />
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop sidebar */}
+      <div className={`fixed left-0 top-0 h-full hidden md:flex flex-col z-40 transition-all duration-300 ${sidebarBase} ${collapsed ? "w-16" : "w-64"}`}>
+        {/* Logo */}
+        <div className={`flex items-center p-4 border-b border-border ${collapsed ? "justify-center" : "gap-2.5 px-5"}`}>
+          <BookOpen className="h-5 w-5 text-blue-500 flex-shrink-0" />
+          {!collapsed && <span className="text-base font-semibold text-foreground tracking-tight">CourseGPT</span>}
         </div>
 
-    );
+        {/* Nav */}
+        <nav className="flex-1 p-3 overflow-hidden">
+          {!collapsed && <p className="text-xs text-muted-foreground uppercase tracking-widest px-2 mb-3">Menu</p>}
+          <ul className="space-y-1">
+            {MENU_ITEMS.map(item => (
+              <NavItem key={item.id} item={item} path={path} collapsed={collapsed} />
+            ))}
+          </ul>
+        </nav>
+
+        {/* Quota + collapse toggle */}
+        <div className="p-3 border-t border-border space-y-3">
+          <QuotaSection quota={quota} collapsed={collapsed} />
+          <button
+            onClick={onToggle}
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-all text-xs"
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed
+              ? <ChevronRight className="h-4 w-4" />
+              : <><ChevronLeft className="h-4 w-4" /><span>Collapse</span></>
+            }
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default SideBar;

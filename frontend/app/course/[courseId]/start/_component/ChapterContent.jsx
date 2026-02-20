@@ -1,121 +1,91 @@
-import Link from "next/link";
 import React from "react";
 import Markdown from "react-markdown";
 import YouTube from "react-youtube";
 
 function ChapterContent({ chapter, content }) {
   const opts = {
-    height: '100%',
-    width: '100%',
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 0,
-    },
+    height: "100%",
+    width: "100%",
+    playerVars: { autoplay: 0 },
   };
-  return (
-    <div className="md:p-10 p-2">
-      <h2 className="font-medium text-2xl">{chapter?.chapterName}</h2>
-      <p className="text-gray-300">{chapter?.description}</p>
 
-      {/* video */}
-      {content?.videoId == "" ? null : (
-        <div className="flex justify-center items-center my-4">
-          <div className="w-full sm:w-[60%] md:w-[75%] lg:w-[60%] xl:w-[50%] 2xl:w-[45%] px-2">
+  return (
+    <div className="md:p-10 p-4 pb-20">
+      {chapter ? (
+        <>
+          <h2 className="font-bold text-2xl text-foreground">{chapter?.chapterName}</h2>
+          <p className="text-muted-foreground mt-2">{chapter?.description}</p>
+        </>
+      ) : (
+        <div className="h-16 bg-muted animate-pulse rounded-xl mb-4" />
+      )}
+
+      {/* Video */}
+      {content?.videoId && content.videoId !== "" && (
+        <div className="flex justify-center my-6">
+          <div className="w-full sm:w-[70%] lg:w-[60%]">
             <YouTube
-              className="h-64"
-              key={content?.chapterId}
-              videoId={content?.videoId}
+              className="h-64 rounded-xl overflow-hidden"
+              key={content.chapterId}
+              videoId={content.videoId}
               opts={opts}
             />
           </div>
         </div>
       )}
 
-      {/* content */}
-      <div>
+      {/* Content sections */}
+      <div className="space-y-6 mt-4">
         {content?.content?.map((item, index) => (
-
-          <div key={index} className="p-5 bg-primary/60 my-8 rounded-lg">
-            <h2 className="font-medium text-2xl mb-3">{item.title}</h2>
-
-            <p>
+          <div key={index} className="p-5 bg-primary/10 dark:bg-primary/20 border border-primary/20 rounded-xl">
+            <h2 className="font-semibold text-lg text-foreground mb-3">{item.title}</h2>
+            <div className="text-sm text-foreground/80 leading-relaxed prose prose-sm dark:prose-invert max-w-none">
               <Markdown>{item.explanation}</Markdown>
-            </p>
+            </div>
 
             {item.code && (
-              <div className="p-4 bg-black text-white mt-5 rounded-sm sm:overflow-auto overflow-scroll">
-                <pre>
-                  <code>{item.code}</code>
-                </pre>
+              <div className="mt-4 p-4 bg-gray-950 text-gray-100 rounded-lg overflow-auto text-xs font-mono">
+                <pre><code>{item.code}</code></pre>
               </div>
             )}
 
             {item.additionalResources && (
-              <div className="mt-5">
-                <h2 className="text-lg font-semibold">Additional Resoures: </h2>
-                <div>
+              <div className="mt-4">
+                <h3 className="text-sm font-semibold text-foreground mb-2">Additional Resources</h3>
+                <div className="space-y-1">
                   {Array.isArray(item.additionalResources) ? (
-                    item.additionalResources.map((link, index) => (
-                      <div key={index} className="gap-4">
+                    item.additionalResources.map((link, i) => (
+                      <div key={i}>
                         {typeof link === "string" ? (
-                          // If link is a string, render as an <a> tag
-                          <a
-                            href={link}
-                            target="_blank"
-                            className="text-blue-600 underline"
-                            rel="noopener noreferrer"
-                          >
-                            {link}
-                          </a>
+                          <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm">{link}</a>
                         ) : link && typeof link === "object" ? (
-                          // If link is an object, render its 'link' and 'title'
                           <>
-                            {link.title && <p>{link.title}:</p>}
-                            <a
-                              href={link.link}
-                              target="_blank"
-                              className="text-blue-600 underline"
-                              rel="noopener noreferrer"
-                            >
-                              {link.link}
-                            </a>
+                            {link.title && <p className="text-xs text-muted-foreground">{link.title}:</p>}
+                            <a href={link.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm">{link.link}</a>
                           </>
                         ) : null}
                       </div>
                     ))
                   ) : typeof item.additionalResources === "string" ? (
-                    // Handle the case where additionalResources is a single string
-                    <a
-                      href={item.additionalResources}
-                      target="_blank"
-                      className="text-blue-600 underline"
-                      rel="noopener noreferrer"
-                    >
-                      {item.additionalResources}
-                    </a>
+                    <a href={item.additionalResources} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm">{item.additionalResources}</a>
                   ) : item.additionalResources && typeof item.additionalResources === "object" ? (
-                    // Handle the case where additionalResources is a single object
                     <>
-                      {item.additionalResources.title && (
-                        <p>{item.additionalResources.title}:</p>
-                      )}
-                      <a
-                        href={item.additionalResources.link}
-                        target="_blank"
-                        className="text-blue-600 underline"
-                        rel="noopener noreferrer"
-                      >
-                        {item.additionalResources.link}
-                      </a>
+                      {item.additionalResources.title && <p className="text-xs text-muted-foreground">{item.additionalResources.title}:</p>}
+                      <a href={item.additionalResources.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm">{item.additionalResources.link}</a>
                     </>
                   ) : null}
-
                 </div>
               </div>
             )}
           </div>
         ))}
       </div>
+
+      {!content && chapter && (
+        <div className="mt-6 space-y-4">
+          {[1, 2, 3].map(i => <div key={i} className="h-40 bg-muted animate-pulse rounded-xl" />)}
+        </div>
+      )}
     </div>
   );
 }
