@@ -7,6 +7,7 @@ import connectDB from './db.js';
 import authRoutes from './routes/user.route.js';
 import courseRoutes from './routes/course.route.js';
 import chapterRoutes from './routes/chapter.route.js';
+import billingRoutes from './routes/billing.route.js';
 import cookieParser from 'cookie-parser';
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.get('/api', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/chapters', chapterRoutes);
+app.use('/api/billing', billingRoutes);
 
 app.use(errorMiddleware)
 app.all('*', (req, res) => {

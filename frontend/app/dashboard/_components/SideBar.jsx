@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { UserCourseListContext } from "@/app/_context/UserCourseListContext";
+import { SubscriptionContext } from "@/app/_context/SubscriptionContext";
 
 const MENU_ITEMS = [
   { id: 1, name: "Home",    icon: Home,    path: "/dashboard" },
@@ -41,15 +42,20 @@ function NavItem({ item, path, collapsed, onClick }) {
   );
 }
 
-function QuotaSection({ quota, collapsed }) {
-  const pct = (quota / 15) * 100;
+function QuotaSection({ quota, limit, collapsed }) {
+  const unlimited = limit == null;
+  const pct = unlimited ? 100 : Math.min((quota / limit) * 100, 100);
+  const limitLabel = unlimited ? "∞" : limit;
   if (collapsed) {
     return (
       <div className="flex flex-col items-center gap-1 px-2">
         <div className="w-8 h-1.5 rounded-full bg-border overflow-hidden">
-          <div className="h-full bg-blue-500 rounded-full" style={{ width: `${pct}%` }} />
+          <div
+            className={`h-full rounded-full ${unlimited ? "bg-purple-500" : "bg-blue-500"}`}
+            style={{ width: `${pct}%` }}
+          />
         </div>
-        <span className="text-[10px] text-muted-foreground">{quota}/15</span>
+        <span className="text-[10px] text-muted-foreground">{quota}/{limitLabel}</span>
       </div>
     );
   }
@@ -57,11 +63,11 @@ function QuotaSection({ quota, collapsed }) {
     <div className="space-y-2 px-2">
       <div className="flex justify-between text-xs text-muted-foreground mb-1">
         <span>Course quota</span>
-        <span className="text-foreground font-medium">{quota} / 15</span>
+        <span className="text-foreground font-medium">{quota} / {limitLabel}</span>
       </div>
       <Progress value={pct} className="h-1.5" />
       <p className="text-xs text-muted-foreground text-center pt-1">
-        Upgrade for unlimited generation
+        {unlimited ? "Pro — unlimited generation" : "Upgrade for unlimited generation"}
       </p>
     </div>
   );
@@ -69,9 +75,12 @@ function QuotaSection({ quota, collapsed }) {
 
 function SideBar({ collapsed, onToggle }) {
   const { userCourseList } = useContext(UserCourseListContext);
+  const subCtx = useContext(SubscriptionContext);
   const path = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const quota = userCourseList?.length ?? 0;
+  const isPro = subCtx?.subscription?.plan === "pro";
+  const quotaLimit = isPro ? null : 15;
 
   const sidebarBase = "flex flex-col bg-background/90 dark:bg-black/50 backdrop-blur-xl border-r border-border";
 
@@ -110,7 +119,7 @@ function SideBar({ collapsed, onToggle }) {
               ))}
             </ul>
             <div className="mt-auto pt-5 border-t border-border">
-              <QuotaSection quota={quota} collapsed={false} />
+              <QuotaSection quota={quota} limit={quotaLimit} collapsed={false} />
             </div>
           </div>
         </div>
@@ -136,7 +145,7 @@ function SideBar({ collapsed, onToggle }) {
 
         {/* Quota + collapse toggle */}
         <div className="p-3 border-t border-border space-y-3">
-          <QuotaSection quota={quota} collapsed={collapsed} />
+          <QuotaSection quota={quota} limit={quotaLimit} collapsed={collapsed} />
           <button
             onClick={onToggle}
             className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-all text-xs"
